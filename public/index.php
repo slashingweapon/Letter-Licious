@@ -48,18 +48,17 @@ if (defined('ENVIRONMENT'))
 {
 	switch (ENVIRONMENT)
 	{
-		case 'development':
-			error_reporting(E_ALL & (~E_DEPRECATED));
-		break;
-	
 		case 'testing':
 		case 'staging':
 		case 'production':
-			error_reporting(0);
-		break;
+			//error_reporting(0);
+			error_reporting(E_ALL & (~E_DEPRECATED));
+			break;
 
+		case 'development':
 		default:
-			exit('The application environment is not set correctly.');
+			error_reporting(E_ALL & (~E_DEPRECATED));
+			break;
 	}
 }
 
@@ -167,7 +166,7 @@ if (defined('ENVIRONMENT'))
  * SEGFAULT.  But everything seems fine if we require it earlier.
  *
  */
-require_once( "FileMaker.php" );
+// require_once( "FileMaker.php" );
 
 /*
  * --------------------------------------------------------------------

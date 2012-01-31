@@ -1,19 +1,24 @@
 README
 
-This project implements a program for making words out of collections of letters.  I wrote it because
-my better half (she knows who she is) likes to play Words With Friends, and insists I play too.  But
-I suck at it, unless I occasionally use a web site that tells me what words I can make.
+This project implements a program for making words out of
+collections of letters.  I wrote it because my better half (she
+knows who she is) likes to play Words With Friends, and insists I
+play too.  But I suck at it, unless I occasionally use a web site
+that tells me what words I can make.
 
-Enter the problem: the web sites I've found all suck for use on mobile.  So I intend to make something
-really focused just on what I need, nicely presented on mobile platforms.
+Enter the problem: the web sites I've found all suck for use on
+mobile.  So I intend to make something really focused just on
+what I need, nicely presented on mobile platforms.
 
-For a database I'm using Postgres, because it supports a combination of data types and indexing that
-is fabulously well-suited to the task at hand.  
+For a database I'm using Postgres, because it supports a
+combination of data types and indexing that is fabulously
+well-suited to the task at hand.
 
 DATA DESCRIPTION
 
-We pull our list of words from TWL06 word list, and keep them in all-caps format.  Word searches
-are capitalized before they are performed.  Here is the table schema:
+We pull our list of words from TWL06 word list, and keep them in
+all-caps format.  Word searches are capitalized before they are
+performed.  Here is the table schema:
 
 	create table words (
 		len smallint NOT NULL,
@@ -24,13 +29,41 @@ are capitalized before they are performed.  Here is the table schema:
 	create index by_sortedLetters on words using BTREE (sortLetters);
 	create index by_letters on words using GIN (letters);
 
-A word is broken up into an array of letters, which are sorted.  The sorted letters become the
-sortLetters field.  It turns out I'm not using that field, but I still may in the future.  I then take
-the same letters and append them with counts, and save them in the 'letters' array field.  For example,
-AARDVARK is saved as:
+A word is broken up into an array of letters, which are sorted. 
+The sorted letters become the sortLetters field.  It turns out
+I'm not using that field, but I still may in the future.  I then
+take the same letters and append them with counts, and save them
+in the 'letters' array field.  For example, AARDVARK is saved as:
+
 	len: 8
 	sortLetters: AAADKRRV
 	letters: {'A0','A1','A2','D0','K0','R0','R1','V0'}
+	word: AARDVARK
+	
+When it comes time to check what words you can make with the
+letters KRADRAAV, the same letter analysis is performed, and the
+following query is issued:
+
+	select * from words where letters <@ '{A0,A1,A2,D0,K0,R0,R1,V0}';
+
+The response comes in easily under a second:
+ len |   sortletters   |          letters          |      word       
+-----+-----------------+---------------------------+-----------------
+   2 | AA              | {A0,A1}                   | AA             
+   8 | AAADKRRV        | {A0,A1,A2,D0,K0,R0,R1,V0} | AARDVARK       
+   2 | AD              | {A0,D0}                   | AD             
+   2 | AR              | {A0,R0}                   | AR             
+   4 | AAKR            | {A0,A1,K0,R0}             | ARAK           
+   3 | AKR             | {A0,K0,R0}                | ARK            
+   3 | AAV             | {A0,A1,V0}                | AVA            
+   3 | ADK             | {A0,D0,K0}                | DAK            
+   4 | ADKR            | {A0,D0,K0,R0}             | DARK           
+   2 | AK              | {A0,K0}                   | KA             
+   4 | AAKV            | {A0,A1,K0,V0}             | KAVA           
+   3 | ADR             | {A0,D0,R0}                | RAD            
+   5 | AADRR           | {A0,A1,D0,R0,R1}          | RADAR          
+   3 | ARV             | {A0,R0,V0}                | VAR            
+   4 | AARV            | {A0,A1,R0,V0}             | VARA           
 
 FRAMEWORK README
 
@@ -62,14 +95,14 @@ constant defined by the server.
 
 REQUIREMENTS
 
-CodeIgniter 2.x:  You will need to put your
-CodeIgniter_2.0.2/system folder into this this one, and call it
-"system".
+system:  You will need to put your CodeIgniter_2.0.2/system
+folder into this this one, and call it "system".
 
 Smarty 3.x: The Smarty folder has to be somewhere in your PHP
 include path.
 
-FileMaker PHP libraries need to be in your PHP include path.
+FileMaker PHP libraries need to be in your PHP include path if
+you plan on using FileMaker.
 
 Apache's ModRewrite must be installed and enabled.
 
@@ -107,13 +140,12 @@ after everything is running.
 
 
 <VirtualHost *:80>
-	DocumentRoot "/Users/cj/Sites/playground/public"
-	ServerName playground
-	
+	DocumentRoot "/home/slashingweapon/letterlicious/public"
+	ServerName letters
 	
 	SetEnv APPLICATION_ENV production
 	
-	<Directory /Users/cj/Sites/playground/public>
+	<Directory /home/slashingweapon/letterlicious/public>
 		Options FollowSymLinks SymLinksIfOwnerMatch
 		DirectoryIndex index.html index.php
 		AllowOverride All
