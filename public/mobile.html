@@ -1,25 +1,30 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>Cheat With Words</title>
-		<link href="/css/small-device.css" type= "text/css" rel="stylesheet"/>
 		<meta name = "viewport" content = "width = device-width"/>
 		<meta name = "viewport" content = "initial-scale = 1.0"/>
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+
+		<link href="/css/small-device.css" type= "text/css" rel="stylesheet"/>
+		<script type="text/javascript" src="/js/jquery-1.7.1.min.js"></script>
+		<script type="text/javascript" src="/js/cww_api.js"></script>
+		<script type="text/javascript" src="/js/mobile.js"></script>
+
+		<title>Cheat With Words</title>
 	</head>
 	<body>
 		<div>
 			<form action="/letters/index" method='POST'>
-				<input type="text" name="search" size="15" value="" autocorrect="off" autocapitalize="characters"/>
-				<input type="submit" value="Find"/>
+				<input id="searchLetters" type="text" name="search" size="15" value="" autocorrect="off" autocapitalize="characters"/>
+				<input id="searchBtn" type="submit" value="Find"/>
 			</form>
 		</div>
-		<table class="wordTable">
+		<table id="wordTable">
 			<tr><td>No Words Found</td></tr>
 		</table>
 		<footer>
-			Word Lists: <a href="/?list=two">2-Letter</a> <a href="/?list=3">3-Letter</a> <a href="/?list=qwithoutu">Q without U</a><br/>
+			Word Lists: <a id="2letter" href="#">2-Letter</a> <a id="3letter" href="#">3-Letter</a> <a id="qwithoutu" href="#">Q without U</a><br/>
 		</footer>
 	</body>
 </html>

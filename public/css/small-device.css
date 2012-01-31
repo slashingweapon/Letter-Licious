@@ -1,10 +1,11 @@
-.wordTable {
+#wordTable {
 	width:100%;
 }
 
-.wordTable td {
+#wordTable td {
 	width: 33%;
 	text-align: left;
+	text-transform:lowercase;
 }
 
 body {
