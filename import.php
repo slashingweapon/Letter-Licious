@@ -1,10 +1,10 @@
 <?php
 
-$dsn = 'mysql:host=localhost;dbname=letteredman';
+$dsn = 'pgsql:host=localhost;dbname=letteredman;user=slashingweapon;password=jacobo';
 $username = 'root';
 $password = '';
 
-$dbh = new PDO($dsn, $username, $password);
+$dbh = new PDO($dsn);
 if (!($dbh instanceof PDO)) {
 	echo "No db connection";
 	exit(1);
@@ -13,19 +13,22 @@ if (!($dbh instanceof PDO)) {
 processLines('TWL06.txt', $dbh);
 
 function processLines($inFilename, $dbConn) {
-	$query = "INSERT INTO words (len, letters, word) VALUES (?, ?, ?)";
+	$query = "INSERT INTO words (len, sortletters, letters, word) 
+		VALUES (?, ?, string_to_array(?,','), ?)";
 	$statement = $dbConn->prepare($query);
 	$linecount = 0;
 	
 	$lines = file($inFilename);
-	foreach($lines as $oneLine) {
-		if (!empty($oneLine)) {
-			$oneLine = trim($oneLine);
-			$oneLine = strtoupper($oneLine);
-			$sortWord = lettersort($oneLine);
-			$length = strlen($sortWord);
+	foreach($lines as $oneWord) {
+		$oneWord = trim($oneWord);
+		if (!empty($oneWord)) {
+			$oneWord = strtoupper($oneWord);
+			$length = strlen($oneWord);
+			$letterArray = lettersort($oneWord);
+			$sortletters = implode('', $letterArray);
+			$letters = implode(',', $letterArray);
 			
-			if (! $statement->execute(array($length, $sortWord, $oneLine))) {
+			if (! $statement->execute(array($length, $sortletters, $letters, $oneWord))) {
 				echo "Insert failed\n";
 				exit();
 			}
@@ -37,6 +40,13 @@ function processLines($inFilename, $dbConn) {
 	}
 }
 
+/**
+ *	Takes a word and returns its letters in a sorted array.  For example, the word AARDVARK
+ *	returns array('A','A','A','D','K','R','R','V')
+ *
+ *	@param string $word The string to process
+ *	@return array An array of characters, in ascending order
+ */
 function lettersort($word) {
 	$letters = array();
 	$count = strlen($word);
@@ -44,6 +54,5 @@ function lettersort($word) {
 	for($idx=0; $idx<$count; $idx++)
 		$letters[] = $word[$idx];
 	sort($letters);
-	$word = implode('', $letters);
-	return $word;
+	return $letters;
 }
