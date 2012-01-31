@@ -24,10 +24,9 @@ function processLines($inFilename, $dbConn) {
 		if (!empty($oneWord)) {
 			$oneWord = strtoupper($oneWord);
 			$length = strlen($oneWord);
-			$letterArray = lettersort($oneWord);
-			$sortletters = implode('', $letterArray);
-			$letters = implode(',', $letterArray);
-			
+			list($sortletters, $letters) = lettersort($oneWord);
+			$sortletters = implode('', $sortletters);
+			$letters = implode(',', $letters);
 			if (! $statement->execute(array($length, $sortletters, $letters, $oneWord))) {
 				echo "Insert failed\n";
 				exit();
@@ -41,18 +40,38 @@ function processLines($inFilename, $dbConn) {
 }
 
 /**
- *	Takes a word and returns its letters in a sorted array.  For example, the word AARDVARK
- *	returns array('A','A','A','D','K','R','R','V')
+ *	Takes a word and returns its letters in two different arrays.  The first is just the letters
+ *	sorted alphabetically, and the second array numbers the letters so there are no duplicate
+ *	letters.  For example, the word AARDVARK
+ *	returns: 
+ *		array(
+ *			array('A','A','A','D','K','R','R','V'),
+ *			array('A0','A1','A2','D0','K0','R0','R1','V0'),
+ *		);
  *
  *	@param string $word The string to process
- *	@return array An array of characters, in ascending order
+ *	@return array An array of two arrays of characters
  */
 function lettersort($word) {
 	$letters = array();
+	$letters_nr = array();
+	
 	$count = strlen($word);
 	
 	for($idx=0; $idx<$count; $idx++)
 		$letters[] = $word[$idx];
 	sort($letters);
-	return $letters;
+	
+	$lastLetter = '';
+	$repeat = 0;
+	foreach($letters as $oneLetter) {
+		if ($oneLetter == $lastLetter)
+			$repeat++;
+		else
+			$repeat = 0;
+		$letters_nr[] = "$oneLetter$repeat";
+		$lastLetter = $oneLetter;
+	}
+
+	return array($letters, $letters_nr);
 }
