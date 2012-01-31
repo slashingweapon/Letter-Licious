@@ -38,7 +38,7 @@
 |
 */
 
-$route['default_controller'] = "letters";
+$route['default_controller'] = "words";
 $route['404_override'] = '';
 
 

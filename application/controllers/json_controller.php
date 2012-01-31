@@ -62,7 +62,7 @@ class Json_Controller extends CI_Controller {
 	/**
 	 *	An example JSON method.
 	 *
-	 *	JSON methods must be public or protected, and being with the string "_json_".  They can
+	 *	JSON methods must be public or protected, and begin with the string "_json_".  They can
 	 *	take any number of parameters, and MUST return a value.  The value can be a scalar, an
 	 *	array, or any object which can be serialized.
 	 *
