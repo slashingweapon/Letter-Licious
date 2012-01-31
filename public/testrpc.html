@@ -1,0 +1,89 @@
+<html>
+	<head>
+		<title>Test JSON-RPC</title>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.min.js"></script>
+		 <script type="text/javascript">
+		 
+		 	function doRPC(evt) {
+		 		evt.preventDefault();
+
+				var url = "/" + $(evt.target).find("[name=controller]").val() + "/json";
+				
+		 		var req = new Object();
+		 		req.jsonrpc = "2.0";
+		 		req.method = "" + $(evt.target).find("[name=method]").val();
+		 		req.id = Math.random();
+		 		req.params = [];
+
+				/*	Push the optional parameters onto the request params array.  */
+				$(evt.target).find("[name=param]").each(function() {
+					var param = $(this).val();
+					if (param != undefined && param != "")
+						req.params.push(param);
+				});
+				
+				var jsonVal = $(evt.target).find("[name=jsonParam]").val();
+				if (jsonVal != undefined && jsonVal != "") {
+					jsonVal = JSON.parse(jsonVal);
+					req.params.push(jsonVal);
+				}
+				
+		 		req = JSON.stringify(req);
+		 		
+		 		$("#requestInfo").html("URL: " + url + "<br/>--&gt;" + req);
+		 		$("#responseInfo").html("<blink><em>sending....</em></blink>");
+		 		$.post(url, req, null, "json")
+				.success(function(data, status, jqxhr) {
+					// on success, response is an object.  So we have to stringify it
+					$("#responseInfo").html("&lt;--"+JSON.stringify(data));
+				})
+				.fail(function() {
+					$("#responseInfo").empty();
+					alert("Call failed");
+				});
+					
+		 	}
+		 	
+			 $(document).ready(function() {
+				$("#jsonForm").submit(doRPC);
+			 });
+		</script>
+	</head>
+	<body>
+		<p>This is an exploratory/debugging tool for testing JSON methods.</p>
+
+		<p>By default, all of these controllers supply an inherited "hello" method.  So sending a
+		valid JSON-RPC 2.0 request to "/words/json" will always return a valid JSON response.</p>
+
+		<p>To get started, just click on the submit button without changing anything.  You'll see the
+		request and response objects printed below the form.</p>
+		
+		<form id="jsonForm">
+			Controller<br/>
+			<input type="text" name="controller" value="letters"/><p/>
+			
+			Method<br/>
+			<input type="text" name="method" value="hello"/><p/>
+			
+			Parameters (optional)<br/>
+			<input type="text" name="param" value=""/>
+			<input type="text" name="param" value=""/>
+			<input type="text" name="param" value=""/>
+			<input type="text" name="param" value=""/>
+			<input type="text" name="param" value=""/><p/>
+			
+			Or enter a JSON parameter to send<br/>
+			<textarea name="jsonParam" rows=10 cols=65></textarea><p/>
+			
+			<input type="submit" value="Send"><p/>
+		</form>
+		<div id="result">
+			<div id="requestInfo">
+				&nbsp;
+			</div>
+			<div id="responseInfo">
+				&nbsp;
+			</div>
+		</div>
+	</body>
+</html>

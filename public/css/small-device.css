@@ -1,5 +1,12 @@
-.word {
-	width: 100px;
-	padding-right:15px;
+.wordTable {
+	width:100%;
+}
+
+.wordTable td {
+	width: 33%;
 	text-align: left;
+}
+
+body {
+	font-family:helvetica;
 }
