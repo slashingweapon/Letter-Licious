@@ -1,3 +1,36 @@
+body {
+	font-family:helvetica;
+	font-size:16pt;
+	margin:0;
+}
+
+section, footer, nav {
+	margin-left:5pt;
+	margin-right:5pt;
+}
+
+h1 {
+	background: -webkit-linear-gradient(#008, #00f);
+	color:white;
+	text-align:center;
+	font-size:22pt;
+	margin-top:0;
+}
+
+input[type=text] {
+	font-size:16px;
+}
+
+button {
+	font-size:18px;
+	font-weight:bold;
+	padding-top: 2pt;
+	padding-bottom: 2pt;
+	color:white;
+	background: -webkit-linear-gradient(#00f, #008);
+	border-radius: 5px;
+}
+
 #wordTable {
 	width:100%;
 }
@@ -8,6 +41,15 @@
 	text-transform:lowercase;
 }
 
-body {
-	font-family:helvetica;
+.navCaption {
+	font-size:.8em;
+	color:#222;
+}
+
+nav .listNav button {
+	background: -webkit-linear-gradient(#f00, #800);
+}
+
+nav .etcNav button {
+	background: -webkit-linear-gradient(#0f0, #080);
 }

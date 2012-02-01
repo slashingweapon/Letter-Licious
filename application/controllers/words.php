@@ -61,7 +61,7 @@ class Words extends Json_Controller {
 	public function _json_list($listName=false) {
 		$words = array();
 		$listName = strtolower($listName);
-		if (!in_array($listName, array('2letter','3letter','qwithoutu')))
+		if (!in_array($listName, array('2letter','greek','qwithoutu')))
 			$listName = '2letter';
 		
 		$file = APPPATH . "../public/{$listName}.txt";

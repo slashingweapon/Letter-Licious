@@ -35,7 +35,7 @@ function fillWordTable(words) {
 		html = "<tr><td>No Matching Words</td></tr>";
 	}
 	console.log(html);
-	$("#wordTable").html(html);
+	$("#wordTable tbody").html(html);
 }
 
 $(document).ready(function() {
@@ -44,9 +44,10 @@ $(document).ready(function() {
 		var searchLetters = $("#searchLetters").val();
 		api.search(searchLetters, fillWordTable);
 	});
-	$("#2letter,#3letter,#qwithoutu").click(function(evt) {
+	// Hook up our list links
+	$("#2letter,#greek,#qwithoutu").click(function(evt) {
 		evt.preventDefault();
-		console.log(evt.target.id);
+		$("#wordTable caption").html(evt.target.title);
 		api.list(evt.target.id, fillWordTable);
 	});
 });
