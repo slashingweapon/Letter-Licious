@@ -62,3 +62,9 @@ nav .listNav button {
 nav .etcNav button {
 	background: -webkit-linear-gradient(#0f0, #080);
 }
+
+footer, footer a, footer a:link, footer a:visited {
+	font-size: .8em;
+	color: #888;
+}
+

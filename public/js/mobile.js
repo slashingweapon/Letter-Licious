@@ -14,7 +14,7 @@
 var currentWords = [];
 var currentColumns = 3;
 var api = new cww_api();
-api.debug = true;
+api.debug = false;
 
 function setWords(words) {
 	currentWords = words;
@@ -40,11 +40,11 @@ function renderWordTable() {
 	} else {
 		html = "<tr><td>No Matching Words</td></tr>";
 	}
-	console.log(html);
 	$("#wordTable tbody").html(html);
 }
 
 $(document).ready(function() {
+	
 	// Check for orientation changes.
 	$("body").on("orientationchange", function() {
 		switch(window.orientation) {
@@ -65,6 +65,7 @@ $(document).ready(function() {
 	$("#searchBtn").click(function(evt) {
 		evt.preventDefault();
 		var searchLetters = $("#searchLetters").val();
+		localStorage.searchTerm = searchLetters;
 		$("#wordTable caption").html("Words using " + searchLetters);
 		api.search(searchLetters, setWords);
 	});
@@ -76,4 +77,8 @@ $(document).ready(function() {
 		api.list(evt.target.id, setWords);
 	});
 	
+	if (typeof(localStorage.searchTerm) == 'string') {
+		$("#searchLetters").val(localStorage.searchTerm);
+		$("#searchBtn").click();
+	}
 });
