@@ -23,6 +23,15 @@ class Words extends Json_Controller {
 			show_error("Could not locate $page ($file)",500);
 	}
 	
+	public function manifest($ver) {
+		$this->config->load("manifest",true);
+		
+		header("Content-type: text/cache-manifest");
+		echo("CACHE MANIFEST\n\n");
+		echo("# This file was automatically generated\n");
+		echo(implode("\n",$this->config->item('manifest')));
+	}
+	
 	/**
 	 *	The simplest API we have.  You send a string of letters, and this function returns
 	 *	an array of matching words.  All of the words are capitalized, and sorted first by length
