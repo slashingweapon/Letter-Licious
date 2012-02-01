@@ -32,7 +32,16 @@ button {
 }
 
 #wordTable {
+	-webkit-text-size-adjust:auto;
 	width:100%;
+}
+
+#wordTable caption {
+	text-align: center;
+	font-size: .8em;
+	font-weight: bold;
+	padding-top: 5px;
+	padding-bottom: 10px;
 }
 
 #wordTable td {
