@@ -23,14 +23,21 @@ class Words extends Json_Controller {
 			show_error("Could not locate $page ($file)",500);
 	}
 	
-	public function manifest($ver=false) {
-		$this->config->load("manifest",true);
+	public function manifest() {
+		$this->config->load("application",true);
+		$appinfo = $this->config->item("application");
 		
+		$ver = $appinfo['version'];
+		if (ENVIRONMENT != 'production')
+			$ver .= "." . rand();
+
 		header("Content-type: text/cache-manifest");
 		echo("CACHE MANIFEST\n\n");
 		echo("# This file was automatically generated\n");
 		echo("# $ver\n");
-		echo(implode("\n",$this->config->item('manifest')));
+		echo("\n");
+		echo("CACHE:\n");
+		echo(implode("\n",$appinfo['manifest']));
 	}
 	
 	/**
