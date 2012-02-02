@@ -95,3 +95,31 @@ cww_api.prototype.makeCall = function(url, method, params, callback) {
 		callback([]);
 	});	
 }
+
+/**
+ *	The cww_app object mainly keeps track of important data, of the type people would normally just
+ *	drop into a global.  Much better than having a profusion of little undocumented variables.
+ *	The mobile and desktop implementations can choose to either sublass/extend or replace
+ *	the parent functionality, as they see fit.
+ *
+ */
+function cww_app() {
+	this.hasLocalStorage = (typeof(localStorage) == 'object');
+}
+
+cww_app.prototype.setValue = function(key, value) {
+	if(this.hasLocalStorage)
+		localStorage[key] = JSON.stringify(value);
+	else
+		this[key] = value;
+}
+
+cww_app.prototype.getValue = function(key) {
+	retval = false;
+	
+	if(this.hasLocalStorage && typeof(localStorage[key] != 'undefined'))
+		retval = eval('(' + localStorage[key] + ')') ;
+	else if(typeof(this[key] != 'undefined'))
+		retval = this[key];
+	return retval;
+}

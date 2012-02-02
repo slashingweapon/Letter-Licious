@@ -11,30 +11,29 @@
  *
  */
 
-var currentWords = [];
-var currentColumns = 3;
 var api = new cww_api();
 api.debug = false;
 
-function setWords(words) {
-	currentWords = words;
-	renderWordTable();
-}
+var app = new cww_app();
+app.currentColumns = 3;
 
-function renderWordTable() {
+cww_app.prototype.renderWordTable = function() {
 	var html = "";
+	
+	$("#wordTable caption").html(app.getValue('resultCaption'));
+	currentWords = app.getValue('searchResults');
 	
 	if (currentWords.length > 0) {
 		for(idx=0; idx<currentWords.length; idx++) {
-			if (idx % currentColumns == 0) {
+			if (idx % app.currentColumns == 0) {
 				html += "<tr>";
 			}
 			html += "<td>" + currentWords[idx] + "</td>";
-			if (idx % currentColumns == currentColumns - 1) {
+			if (idx % app.currentColumns == app.currentColumns - 1) {
 				html += "</tr>"
 			}
 		}
-		if (idx % currentColumns != currentColumns - 1) {
+		if (idx % app.currentColumns != app.currentColumns - 1) {
 			html += "</tr>";
 		}
 	} else {
@@ -50,35 +49,45 @@ $(document).ready(function() {
 		switch(window.orientation) {
 			case 90:
 			case -90:
-				currentColumns = 4;
+				app.currentColumns = 4;
 				break;
 			case 0:
 			case 180:
 			default:
-				currentColumns = 3;
+				app.currentColumns = 3;
 				break;
 		}
-		renderWordTable();
+		app.renderWordTable();
 	});
 	
 	// Hook up the search box
 	$("#searchBtn").click(function(evt) {
 		evt.preventDefault();
 		var searchLetters = $("#searchLetters").val();
-		localStorage.searchTerm = searchLetters;
-		$("#wordTable caption").html("Words using " + searchLetters);
-		api.search(searchLetters, setWords);
+		app.setValue('searchTerm', searchLetters);
+		app.setValue('resultCaption', "Words using " + searchLetters);
+		app.setValue('searchResults', []);
+		app.renderWordTable();
+		api.search(searchLetters, function(words) {
+			app.setValue('searchResults', words);
+			app.renderWordTable();
+		});
 	});
 
 	// Hook up our list links
 	$("#2letter,#greek,#qwithoutu").click(function(evt) {
 		evt.preventDefault();
-		$("#wordTable caption").html(evt.target.title);
-		api.list(evt.target.id, setWords);
+		app.setValue('resultCaption', evt.target.title);
+		app.setValue('searchResults', []);
+		app.renderWordTable();
+		api.list(evt.target.id, function(words) {
+			app.setValue('searchResults', words);
+			app.renderWordTable();
+		});
 	});
 	
-	if (typeof(localStorage.searchTerm) == 'string') {
-		$("#searchLetters").val(localStorage.searchTerm);
-		$("#searchBtn").click();
+	if (app.getValue("searchTerm") && app.getValue("searchResults")) {
+		$("#searchLetters").val(app.getValue('searchTerm'));
+		app.renderWordTable();
 	}
 });
