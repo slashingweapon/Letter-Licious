@@ -60,9 +60,9 @@ class Words extends Json_Controller {
 	 *	Returns an array of words from one of the common lists we keep in the cache.  These are
 	 *	used so frequently that we make them a special case.
 	 *
-	 *	The lists names are case-insensitive, and are rather self-explanatory:
-	 *	- 2letter (default)
-	 *	- 3letter
+	 *	The list names are case-insensitive, and are rather self-explanatory:
+	 *	- 2letter
+	 *	- greek
 	 *	- qwithoutu
 	 *
 	 *	@param string $listName The name of the list to return
@@ -71,12 +71,11 @@ class Words extends Json_Controller {
 	public function _json_list($listName=false) {
 		$words = array();
 		$listName = strtolower($listName);
-		if (!in_array($listName, array('2letter','greek','qwithoutu')))
-			$listName = '2letter';
-		
-		$file = APPPATH . "../public/{$listName}.txt";
-		if (file_exists($file))
-			$words = file($file,FILE_IGNORE_NEW_LINES);
+		$listName = preg_replace('/[^a-z0-9]/','', $listName);
+		$fileName = APPPATH . "../public/lists/{$listName}.txt";
+
+		if (file_exists($fileName))
+			$words = file($fileName,FILE_IGNORE_NEW_LINES);
 			
 		return $words;
 	}
