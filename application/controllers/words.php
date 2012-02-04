@@ -6,9 +6,21 @@ class Words extends Json_Controller {
 
 	function __construct() {
 		parent::__construct();
+
+		// Save the application.php configuration as $this->appinfo
+		$this->config->load("application",true);
+		$this->appinfo = $this->config->item("application");
+
 		$this->load->helper('letter');
 		$this->load->library('user_agent');
 		$this->load->model('words_model', '', true);
+	}
+	
+	/*	I had to write this because CodeIgniter's so-called date helper doesn't know how to properly
+		format an RFC 1123 date-time.  Assholes!
+	*/
+	private function httpDate($time) {
+		return gmdate('D, d M Y H:i:s', $time) . ' GMT';
 	}
 	
 	public function index() {
@@ -17,17 +29,23 @@ class Words extends Json_Controller {
 			$page = "mobile.html";
 		
 		$file = APPPATH . "../public/$page";
-		if (file_exists($file))
+		if (file_exists($file)) {
+			$lmod = filemtime($file);
+			$maxAge = $this->appinfo['clientCache'];
+			$this->output->set_header("Cache-control: public, max-age=$maxAge");
+			$date = $this->httpDate($lmod);
+			$this->output->set_header("Last-Modified: $date");
+			$date = $this->httpDate(time()+$maxAge);
+			$this->output->set_header("Expires: $date");
+			
 			readfile($file);
-		else
+		} else
 			show_error("Could not locate $page ($file)",500);
 	}
 	
 	public function manifest() {
-		$this->config->load("application",true);
-		$appinfo = $this->config->item("application");
 		
-		$ver = $appinfo['version'];
+		$ver = $this->appinfo['version'];
 		if (ENVIRONMENT != 'production')
 			$ver .= "." . rand();
 
@@ -37,7 +55,7 @@ class Words extends Json_Controller {
 		echo("# $ver\n");
 		echo("\n");
 		echo("CACHE:\n");
-		echo(implode("\n",$appinfo['manifest']));
+		echo(implode("\n",$this->appinfo['manifest']));
 	}
 	
 	/**

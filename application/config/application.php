@@ -1,6 +1,8 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-$config['version'] = "r3.1";
+$config['version'] = "r3.2";
+
+$config['clientCache'] = 42300;	// 12 hours (in seconds) before a date check
 
 $config['manifest'] = array(
 	"/js/jquery-1.7.1.min.js",
