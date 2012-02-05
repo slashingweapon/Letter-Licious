@@ -7,40 +7,58 @@
  *
  *	requires:
  *		JQuery
- *		cww_api.js
+ *		cssApp.js
  *
  */
+function mobileDelegate() {
+	this.currentColumns = 3;
+	this.application = null;
+}
 
-var api = new cww_api();
-api.debug = false;
+mobileDelegate.prototype.handleSearchStart = function(app) {
+	$(".resultArea").hide();
+	$(".resultArea.searching").show();
+}
 
-var app = new cww_app();
-app.currentColumns = 3;
+mobileDelegate.prototype.handleSearchError = function(app, message) {
 
-cww_app.prototype.renderWordTable = function() {
+}
+
+mobileDelegate.prototype.handleSearchEnd = function(app) {
+	this.renderWordTable();
+}
+
+mobileDelegate.prototype.renderWordTable = function() {
 	var html = "";
 	
-	$("#wordTable caption").html(app.getValue('resultCaption'));
-	currentWords = app.getValue('searchResults');
+	$(".resultArea").hide();
+	
+	$("#wordTable caption").html(this.application.getLocalValue('resultCaption'));
+	currentWords = this.application.getSearchResults();
 	
 	if (currentWords.length > 0) {
 		for(idx=0; idx<currentWords.length; idx++) {
-			if (idx % app.currentColumns == 0) {
+			if (idx % this.currentColumns == 0) {
 				html += "<tr>";
 			}
 			html += "<td>" + currentWords[idx] + "</td>";
-			if (idx % app.currentColumns == app.currentColumns - 1) {
+			if (idx % this.currentColumns == this.currentColumns - 1) {
 				html += "</tr>"
 			}
 		}
-		if (idx % app.currentColumns != app.currentColumns - 1) {
+		if (idx % this.currentColumns != this.currentColumns - 1) {
 			html += "</tr>";
 		}
+		$(".resultArea.results").show();
 	} else {
-		html = "<tr><td>No Matching Words</td></tr>";
+		$(".resultArea.noResults").show();
 	}
 	$("#wordTable tbody").html(html);
 }
+
+var mobileManager = new mobileDelegate();
+var app = new cwwApp(mobileManager);
+mobileManager.application = app;
 
 $(document).ready(function() {
 	
@@ -49,45 +67,43 @@ $(document).ready(function() {
 		switch(window.orientation) {
 			case 90:
 			case -90:
-				app.currentColumns = 4;
+				mobileManager.currentColumns = 4;
 				break;
 			case 0:
 			case 180:
 			default:
-				app.currentColumns = 3;
+				mobileManager.currentColumns = 3;
 				break;
 		}
-		app.renderWordTable();
+		mobileManager.renderWordTable();
 	});
 	
 	// Hook up the search box
 	$("#searchBtn").click(function(evt) {
 		evt.preventDefault();
 		var searchLetters = $("#searchLetters").val();
-		app.setValue('searchTerm', searchLetters);
-		app.setValue('resultCaption', "Words using " + searchLetters);
-		app.setValue('searchResults', []);
-		app.renderWordTable();
-		api.search(searchLetters, function(words) {
-			app.setValue('searchResults', words);
-			app.renderWordTable();
-		});
+		app.setLocalValue('searchTerm', searchLetters);
+		app.setLocalValue('resultCaption', "Words using " + searchLetters);
+		app.search(searchLetters);
 	});
 
-	// Hook up our list links
-	$("#2letter,#greek,#qwithoutu").click(function(evt) {
+	// Hook up our list links to fire off the appropriate requests to the server
+	$(".listNav button").click(function(evt) {
 		evt.preventDefault();
-		app.setValue('resultCaption', evt.target.title);
-		app.setValue('searchResults', []);
-		app.renderWordTable();
-		api.list(evt.target.id, function(words) {
-			app.setValue('searchResults', words);
-			app.renderWordTable();
-		});
+		app.setLocalValue('resultCaption', evt.target.title);
+		app.list(evt.target.id);
 	});
 	
-	if (app.getValue("searchTerm") && app.getValue("searchResults")) {
-		$("#searchLetters").val(app.getValue('searchTerm'));
-		app.renderWordTable();
+	// The miscellaney buttons reveal hidden sections of HTML.
+	$(".etcNav button").click(function(evt) {
+		evt.preventDefault();
+		$(".resultArea").hide();
+		$(".resultArea."+evt.target.id).show();
+	});
+	
+	if (app.getLocalValue("searchTerm") && app.getSearchResults()) {
+		$("#searchLetters").val(app.getLocalValue('searchTerm'));
+		mobileManager.renderWordTable();
 	}
+	
 });

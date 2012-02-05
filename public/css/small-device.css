@@ -4,9 +4,17 @@ body {
 	margin:0;
 }
 
+.hidden {
+	display:none;
+}
+
 section, footer, nav {
 	margin-left:5pt;
 	margin-right:5pt;
+}
+
+p {
+	font-size:12pt;
 }
 
 h1 {

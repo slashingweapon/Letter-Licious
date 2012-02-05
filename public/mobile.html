@@ -9,7 +9,7 @@
 		<link rel="apple-touch-icon" href="/word.png"/>
 		<link href="/css/small-device.css" type= "text/css" rel="stylesheet"/>
 		<script type="text/javascript" src="/js/jquery-1.7.1.min.js"></script>
-		<script type="text/javascript" src="/js/cww_api.js"></script>
+		<script type="text/javascript" src="/js/cwwApp.js"></script>
 		<script type="text/javascript" src="/js/mobile.js"></script>
 
 		<title>Cheat With Words</title>
@@ -26,13 +26,49 @@
 			</form>
 		</section>
 		
-		<section name="searchResults">
+		<section class="resultArea results hidden">
 			<table id="wordTable">
 				<caption>&nbsp;</caption>
 				<tbody> </tbody>
 			</table>
 		</section>
 		
+		<section class="resultArea noResults hidden">
+			<h3>No matching words</h3>
+		</section>
+		
+		<section class="resultArea searching hidden">
+			<h3>Searching...</h3>
+		</section>
+		
+		<section class="resultArea help">
+			<h2>How to Cheat</h2>
+			
+			<p>Enter your letters into the box above and click on "Cheat!", and you'll get a list of
+			all the matching words from the Official Tournament and Club Word List (TWL06).</p>
+			
+			<p>Your opponent will curse you.  That's our job.  To make your opponent 
+			curse you.  And maybe cry a little.</p>
+		</section>
+		
+		<section class="resultArea about hidden">
+			<h2>Why Cheat With Words?</h2>
+			
+			<p>My significant other (she knows who she is) likes to play <a
+			href="http://www.wordswithfriends.com/">Words With Friends</a>, and she's much better at
+			it than I am.  Rather than simply admit defeat, I started using word-finding sites to
+			help me get a few extra points.</p>
+			
+			<p>After a few weeks of trying various sites, and finding none that I really liked,
+			I decided to write my own.  Since I make much of my living writing PHP, it wasn't
+			a big leap.</p>
+
+			<p>I still don't win much, but now I'm losing by less than 100 points.</p>
+			
+			<p>Mostly.</p>
+			
+		</section>
+			
 		<hr/>
 		<nav>
 			<div class="listNav">
@@ -40,6 +76,11 @@
 				<button id="2letter" title="Two-Letter Words">2L</button>
 				<button id="greek" title="The Greek alphabet are all valid words, and can be pluralized with -s.">&Delta;&Xi;&Omega;</button>
 				<button id="qwithoutu" title="Words containing Q but not U.">Q!U</button>
+			</div>			
+			<div class="etcNav">
+				<span class="navCaption">miscellany</span><br/>
+				<button id="help" title="Help">Help</button>
+				<button id="about" title="About this Site">About</button>
 			</div>			
 		</nav>
 		
