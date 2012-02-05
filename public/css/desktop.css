@@ -1,0 +1,136 @@
+body {
+	font-family:helvetica;
+	font-size:16pt;
+	margin:auto;
+	width:720pt;
+}
+
+div, section, footer, nav {
+/*	border: 1px solid black; */
+}
+
+div.mainContent {
+	margin-top: 10pt;
+	margin:0;
+	width:480pt;
+	float:left;
+}
+
+div.extraContent {
+	margin-top: 10pt;
+	margin:0;
+	width:200pt;
+	float:right;
+}
+
+.clearAll {
+	clear:both;
+}
+
+.hidden {
+	display:none;
+}
+
+section, footer, nav {
+	margin-left:5pt;
+	margin-right:5pt;
+}
+
+h1 {
+	background: -webkit-linear-gradient(#008, #00f);
+	color:white;
+	text-align:center;
+	font-size:22pt;
+	margin-top:0;
+	padding-top:8pt;
+	padding-bottom:8pt;
+}
+
+hr {
+	margin-top: 50pt;
+	margin-bottom: 5pt;
+}
+
+input[type=text] {
+	font-size:18pt;
+}
+
+button {
+	font-size:18px;
+	font-weight:bold;
+	padding-top: 4pt;
+	padding-bottom: 4pt;
+	color:white;
+	background: -webkit-linear-gradient(#00f, #008);
+	border-radius: 5px;
+}
+
+button#searchBtn {
+	margin-bottom: 8pt;
+	vertical-align:center;
+}
+
+#wordTable {
+	-webkit-text-size-adjust:auto;
+	width:100%;
+}
+
+#wordTable caption {
+	text-align: center;
+	font-size: .8em;
+	font-weight: bold;
+	padding-top: 5px;
+	padding-bottom: 10px;
+}
+
+#wordTable td {
+	text-align: left;
+	text-transform:lowercase;
+}
+
+.resultArea {
+	margin-top: 20px;
+}
+
+.resultArea.about, 
+.resultArea.tech,
+.resultArea.help {
+	font-size:14pt;
+}
+
+.navCaption {
+	font-size:.8em;
+	color:#222;
+	text-transform:lowercase;
+}
+
+nav .listNav button {
+	background: -webkit-linear-gradient(#f00, #800);
+}
+
+nav .etcNav button {
+	background: -webkit-linear-gradient(#0f0, #080);
+}
+
+footer, footer a, footer a:link, footer a:visited {
+	font-size: .8em;
+	color: #888;
+}
+
+.logos {
+	text-align:center;
+}
+
+.logos img {
+	vertical-align:center;
+	text-align:center;
+	height:100pt;
+	margin-left:8pt;
+	margin-right:8pt;
+}
+
+.listNav, .etcNav {
+	float:left;
+	margin-right:10pt;
+}
+

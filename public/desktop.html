@@ -1,25 +1,141 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<link href="/css/desktop.css" type= "text/css" rel="stylesheet"/>
+		
+		<script type="text/javascript" src="/js/jquery-1.7.1.min.js"></script>
+		<script type="text/javascript" src="/js/cwwApp.js"></script>
+		<script type="text/javascript" src="/js/desktop.js"></script>
+
 		<title>Cheat With Words</title>
-		<link href="/css/small-device.css" type= "text/css" rel="stylesheet"/>
-		<meta name = "viewport" content = "width = device-width"/>
-		<meta name = "viewport" content = "initial-scale = 1.0"/>
-		<meta name="apple-mobile-web-app-capable" content="yes" />
-		<meta name="apple-mobile-web-app-status-bar-style" content="black" />
 	</head>
 	<body>
-		<div>
-			<form action="/letters/index" method='POST'>
-				<input type="text" name="search" size="15" value="" autocorrect="off" autocapitalize="characters"/>
-				<input type="submit" value="Find"/>
-			</form>
+		<div id="fb-root"></div>
+		<h1>Cheat With Words</h1>
+		
+		<div class="mainContent">
+			<div name="searchTerms">
+				<form>
+					<input id="searchLetters" type="text" name="search" size="15" 
+						value="" autocorrect="off" autocapitalize="characters"
+						placeholder="your letters here"/>
+					<button id="searchBtn">Cheat!</button>
+				</form>
+			</div>
+			
+			<div class="resultArea results hidden">
+				<table id="wordTable">
+					<caption>&nbsp;</caption>
+					<tbody> </tbody>
+				</table>
+			</div>
+			
+			<div class="resultArea noResults hidden">
+				<p>No matching words were found.</p>
+			</div>
+			
+			<div class="resultArea searching hidden">
+				<p>Searching...</p>
+			</div>
+			
+			<div class="resultArea help">
+				<h2>How to Cheat With Words</h2>
+				
+				<p>Looking for obsure words that you can make with the letters ZYGPNTS?  Enter
+				your letters into the box above and click on "Cheat!", and you'll get a list of all
+				the matching words from the Official Tournament and Club Word List (TWL06).</p>
+				
+				<p>Your opponent will curse you.  That's our job.  To make your opponent 
+				curse you.  And maybe cry a little.</p>
+				
+			</div>
+			
+			<div class="resultArea about hidden">
+				<h2>Why Cheat With Words?</h2>
+				
+				<p>My significant other (she knows who she is)
+				likes to play <a href="http://www.wordswithfriends.com/">Words With Friends</a>, and she's much better at it than I am.  Rather
+				than simply admit defeat, I started using word-finding sites to help me get a few
+				extra points.</p>
+				
+				<p>After a few weeks of trying various sites, and finding none that I really liked,
+				I decided to write my own.  Since I make much of my living writing PHP, it wasn't
+				a big leap.</p>
+
+				<p>I still don't win much, but now I'm losing by less than 100
+				points.</p>
+				
+				<p>Mostly.</p>
+				
+			</div>
+			
+			<div class="resultArea tech hidden">
+				<h2>About the Technology</h2>
+				
+				<p>This site was created with a bevy of useful technologies:</p>
+				<ul>
+					<li>Linode hosting</li>
+					<li>Ubuntu OS</li>
+					<li>Apache 2 web server</li>
+					<li>PostgreSQL database</li>
+					<li>PHP scripting</li>
+					<li>CodeIgniter framework</li>
+				</ul>
+				
+				<p>Most of these are the usual suspects.  They're free and dependable, so
+				you need a justification to use anything else.</p>
+				
+				<p>I used PostgreSQL instead of the usual database because its combination of 
+				array fields and the inverted index was perfect for the task.  I like PostgreSQL
+				so much that I might just keep on using it.</p>
+				
+				<p>The site itself is pretty simple: just HTML and JavaScript, with the occasional 
+				JSON RPC call to perform the searches.  Because I like me some JSON RPC.</p>
+				
+				<hr/>
+				<div class="logos">
+					<a href="http://www.linode.com"><img src="/images/linode.jpeg"/></a>
+					<a href="http://www.ubuntu.com/"><img src="/images/ubuntu.png"></a>
+					<a href="http://www.apache.org"><img src="/images/apache.png"/></a>
+					<a href="http://www.postgresql.org"><img src="/images/postgres.png"/></a>
+					<a href="http://www.php.net"><img src="/images/php.jpeg"/></a>
+					<a href="http://codeigniter.com"><img src="/images/codeigniter.jpeg"/></a>
+				</div>
+			</div>
+
+			<hr/>
 		</div>
-		<table class="wordTable">
-			<tr><td>No Words Found</td></tr>
-		</table>
+
+		<div class="extraContent">
+			<!-- Place this tag where you want the +1 button to render -->
+			<div class="g-plusone" data-href="http://www.cheatwithwords.com"></div>
+			<!-- Twitter -->
+			<div><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://www.cheatwithwords.com/" data-size="medium">Tweet</a></div>
+			<!-- Facebook Like -->
+			<div class="fb-like" data-href="http://www.cheatwithwords.com" data-send="true" data-layout="button_count" data-width="200" data-show-faces="true" data-font="verdana"></div>			
+		</div>
+
+		<div  class="clearAll"/>
+		
+		<nav class="clearAll">
+			<div class="listNav">
+				<span class="navCaption">special word lists</span><br/>
+				<button id="2letter" title="Two-Letter Words">2L</button>
+				<button id="greek" title="The Greek alphabet are all valid words, and can be pluralized with -s.">&Delta;&Xi;&Omega;</button>
+				<button id="qwithoutu" title="Words containing Q but not U.">Q!U</button>
+			</div>
+			<div class="etcNav">
+				<span class="navCaption">Miscellany</span><br/>
+				<button id="help" title="Help">Help</button>
+				<button id="about" title="About this Site">About</button>
+				<button id="tech" title="tech">G&epsilon;&epsilon;&kappa;</button>
+			</div>
+		</nav>
+		
+		<div class="clearAll"/>
+		
 		<footer>
-			Word Lists: <a href="/?list=two">2-Letter</a> <a href="/?list=3">3-Letter</a> <a href="/?list=qwithoutu">Q without U</a><br/>
+			<p>&copy;2012 <a href="mailto:slashingweapon@gmail.com">CJ Holmes</a></p>
 		</footer>
 	</body>
 </html>

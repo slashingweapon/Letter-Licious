@@ -24,8 +24,8 @@ class Words extends Json_Controller {
 	}
 	
 	public function index() {
-//		$page = "desktop.html";
-//		if ($this->agent->is_mobile())
+		$page = "desktop.html";
+		if ($this->agent->is_mobile())
 			$page = "mobile.html";
 		
 		$file = APPPATH . "../public/$page";

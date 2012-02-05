@@ -1,6 +1,6 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-$config['version'] = "r3.2";
+$config['version'] = "r4";
 
 $config['clientCache'] = 42300;	// 12 hours (in seconds) before a date check
 
@@ -11,3 +11,4 @@ $config['manifest'] = array(
 	"/css/small-device.css",
 	"/word.png",
 );
+
