@@ -17,6 +17,7 @@ function desktopDelegate() {
 
 desktopDelegate.prototype.handleSearchStart = function(app) {
 	$(".resultArea").hide();
+	$(".resultArea.searching").show();
 }
 
 desktopDelegate.prototype.handleSearchError = function(app, message) {
