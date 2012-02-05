@@ -1,9 +1,9 @@
 /**
- *	mobile.js
+ *	desktop.js
  *	by CJ Holmes
  *	Jan 2012
  *
- *	The page-specific scripts for the mobile interface to Cheat With Words.
+ *	The page-specific scripts for the desktop interface to Cheat With Words.
  *
  *	requires:
  *		JQuery
