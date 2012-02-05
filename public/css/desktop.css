@@ -38,6 +38,7 @@ section, footer, nav {
 
 h1 {
 	background: -webkit-linear-gradient(#008, #00f);
+	background: -moz-linear-gradient(top, #008, #00f);
 	color:white;
 	text-align:center;
 	font-size:22pt;
@@ -62,6 +63,7 @@ button {
 	padding-bottom: 4pt;
 	color:white;
 	background: -webkit-linear-gradient(#00f, #008);
+	background: -moz-linear-gradient(top, #00f, #008);
 	border-radius: 5px;
 }
 
@@ -106,10 +108,12 @@ button#searchBtn {
 
 nav .listNav button {
 	background: -webkit-linear-gradient(#f00, #800);
+	background: -moz-linear-gradient(top, #f00, #800);
 }
 
 nav .etcNav button {
 	background: -webkit-linear-gradient(#0f0, #080);
+	background: -moz-linear-gradient(top, #0f0, #080);
 }
 
 footer, footer a, footer a:link, footer a:visited {
