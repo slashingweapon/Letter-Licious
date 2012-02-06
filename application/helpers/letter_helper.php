@@ -19,10 +19,9 @@
 function processLetters($word) {
 	$letters = array();
 	$letters_nr = array();
-	
-	$word = preg_replace('/[^a-zA-Z]/','', $word);
+
+	$word = filterString($word);	
 	$word = substr($word, 0, 15);
-	$word = strtoupper($word);
 	$count = strlen($word);
 	
 	for($idx=0; $idx<$count; $idx++)
@@ -41,4 +40,14 @@ function processLetters($word) {
 	}
 
 	return array($letters, $letters_nr);
+}
+
+/**
+ *	Does the work of cutting down a string to just what we want: uppercase letters.
+ *
+ */
+function filterString($word) {
+	$word = preg_replace('/[^a-zA-Z]/','', $word);
+	$word = strtoupper($word);
+	return $word;
 }

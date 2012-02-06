@@ -105,4 +105,79 @@ class Words extends Json_Controller {
 		return $words;
 	}
 	
+	/**
+	 *	Takes an object with a variety of search parameters, and returns an object with detailed 
+	 *	results.
+	 *
+	 *	The input object may have the following properties:
+	 *	- letters (required) The player's letters
+	 *	- prefix (optional) Limit results to words starting with these letters
+	 *	- suffix (optional) Limit results to words ending with these letters
+	 *	- onBoard (optinal) If true, the prefix/suffix letters are already on the board
+	 *	
+	 *	The output object has the following properties:
+	 *	- words An array of matching words.  Could be empty.
+	 *	- letters The actual search letters used
+	 *	- duration_ms How long it took to perform the search, in milliseconds.
+	 */
+	public function _json_advancedSearch($terms) {
+		$retval = (object)array(
+			'letters' => '',
+			'duration_ms' => 0,
+			'words' => array(),
+		);
+
+		if (!is_object($terms))
+			throw new Exception("Expected object for parameter 1");
+		
+		if (!isset($terms->letters) || !is_string($terms->letters))
+			throw new Exception("Expected string for p1.letters");
+		else
+			$terms->letters = filterString($terms->letters);
+		
+		// set some default values for other parts of the object, to simplify our logic later
+		if (!isset($terms->prefix) || !is_string($terms->prefix))	
+			$terms->prefix = '';
+		else
+			$terms->prefix = filterString($terms->prefix);
+			
+		if (!isset($terms->suffix) || !is_string($terms->suffix))	
+			$terms->suffix = '';
+		else
+			$terms->suffix = filterString($terms->suffix);
+			
+		if (!isset($terms->onBoard)) 
+			$terms->onBoard = false;
+		
+		if ($terms->onBoard)
+			$terms->letters .= $terms->prefix . $terms->suffix;
+		else {
+			$_ixes = $terms->prefix . $terms->suffix;
+			$len = strlen($_ixes);
+			for($idx=0; $idx<$len; $idx++) {
+				$char = $_ixes[$idx];
+				// we have to make sure that all the letters we use in the prefix and suffix
+				// are in fact available in ->letters.  This includes counting incidences of
+				// letters.
+				if (substr_count($terms->letters, $char) < substr_count($_ixes, $char))
+					throw new Exception("You need more letters for that prefix/suffix.");
+			}
+		}
+		
+		if (strlen($terms->letters)>15)
+			throw new Exception("You have too many letters.  Fifteen is the maximum.");
+		
+		list($searchLetters, $uniqueLetters) = processLetters($terms->letters);
+		$retval->letters = implode('', $searchLetters);
+		$intvl = 1;
+		
+		if (!empty($uniqueLetters))
+			$retval->words = $this->words_model->findWordsByEnumeratedLetters($uniqueLetters, 
+				$terms->prefix, $terms->suffix, $intvl);
+		
+		$retval->duration_ms = intval($intvl*1000);
+		
+		return $retval;
+	}
+	
 }

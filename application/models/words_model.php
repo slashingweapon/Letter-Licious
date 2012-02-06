@@ -9,20 +9,32 @@ class Words_model extends CI_Model {
 	 *
 	 *	Returns an array of words.  Returns an empty array on failure.
 	 */
-	public function findWordsByEnumeratedLetters($letters) {
+	public function findWordsByEnumeratedLetters($letters, $prefix=null, $suffix=null, &$time=null) {
 		$retval = array();
+		$intvl = 0;
 		$letterStuff = implode(',', $letters);
 		
-		$query = $this->db->from('words')
+		$this->db->from('words')
 			->select('trim(from word) as trimword', false)
 			->where("letters <@ '\{$letterStuff}'")
 			->order_by('len', "desc")
-			->order_by("trimword") 
-			->get();
+			->order_by("trimword");
 		
+		if (!empty($prefix))
+			$this->db->where("word like '$prefix%'");
+		
+		if (!empty($suffix))
+			$this->db->where("word similar to '%$suffix *'");
+			
+		// measure the time it takes to query and fetch the data
+		$time = microtime(true);
+
+		$query = $this->db->get();			
 		foreach($query->result() as $row)
 			$retval[] = $row->trimword;
 			
+		$time = microtime(true) - $time;
+
 		return $retval;
 	}
 	
