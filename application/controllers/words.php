@@ -32,11 +32,11 @@ class Words extends Json_Controller {
 		if (file_exists($file)) {
 			$lmod = filemtime($file);
 			$maxAge = $this->appinfo['clientCache'];
-			$this->output->set_header("Cache-control: public, max-age=$maxAge");
+			header("Cache-control: public, max-age=$maxAge");
 			$date = $this->httpDate($lmod);
-			$this->output->set_header("Last-Modified: $date");
+			header("Last-Modified: $date");
 			$date = $this->httpDate(time()+$maxAge);
-			$this->output->set_header("Expires: $date");
+			header("Expires: $date");
 			
 			readfile($file);
 		} else
