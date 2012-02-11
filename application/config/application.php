@@ -2,7 +2,7 @@
 
 $config['version'] = "r4.2";
 
-$config['clientCache'] = 42300;	// 12 hours (in seconds) before a date check
+$config['clientCache'] = 43200;	// 12 hours (in seconds) before a date check
 
 $config['manifest'] = array(
 	"/js/jquery-1.7.1.min.js",

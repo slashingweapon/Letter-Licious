@@ -49,6 +49,14 @@ class Words extends Json_Controller {
 		if (ENVIRONMENT != 'production')
 			$ver .= "." . rand();
 
+		$lmod = time();
+		$maxAge = $this->appinfo['clientCache'];
+		header("Cache-control: public, max-age=$maxAge");
+		$date = $this->httpDate($lmod);
+		header("Last-Modified: $date");
+		$date = $this->httpDate(time()+$maxAge);
+		header("Expires: $date");
+
 		header("Content-type: text/cache-manifest");
 		echo("CACHE MANIFEST\n\n");
 		echo("# This file was automatically generated\n");
