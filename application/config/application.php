@@ -1,6 +1,6 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-$config['version'] = "r4.2";
+$config['version'] = "r5";
 
 $config['clientCache'] = 43200;	// 12 hours (in seconds) before a date check
 
