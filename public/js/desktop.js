@@ -65,10 +65,16 @@ $(document).ready(function() {
 	// Hook up the search box
 	$("#searchBtn").click(function(evt) {
 		evt.preventDefault();
-		var searchLetters = $("#searchLetters").val();
-		app.setLocalValue('searchTerm', searchLetters);
-		app.setLocalValue('resultCaption', "Words using " + searchLetters);
-		app.search(searchLetters);
+		var searchParams = {
+			letters: $("#searchLetters").val(),
+			prefix: $("#prefixLetters").val(),
+			suffix: $("#suffixLetters").val(),
+			onBoard: ($("#onBoard:checked").length > 0) ? true : false
+		};
+		
+		app.setLocalValue('searchTerm', searchParams.letters);
+		app.setLocalValue('resultCaption', "Words using " + searchParams.letters);
+		app.search(searchParams);
 	});
 
 	// Hook up our list links to fire off
@@ -78,6 +84,7 @@ $(document).ready(function() {
 		app.list(evt.target.id);
 	});
 	
+	// The Miscellaneous buttons simply display some alternate hidden div
 	$(".etcNav button").click(function(evt) {
 		evt.preventDefault();
 		$(".resultArea").hide();

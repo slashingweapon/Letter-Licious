@@ -70,17 +70,32 @@ cwwApp.prototype.getSearchResults = function() {
 }
 
 /**
+ *	Search for words that match the given parameters.  When the search is complete, the delegate's
+ *	handleSearchEnd() method will be called.  At that time, the response will be available through
+ *	this object's getSearchResults() method.
+ *
+ *	search() accepts two kinds of parameters:
+ *	- A string of letters to use in the search or
+ *	- An object consisting of
+ *		- letters: (required) the letters to search
+ *		- prefix: restrict matches to those words matching the prefix
+ *		- suffix: restrict matches to those words with this suffix
+ *		- onBoard: if true, prefix and suffix characters are added to the letters
  *	Search for words that you can make from the letters in the given string.  The response will
  *	always be an array of words (which may be empty).
  */
-cwwApp.prototype.search = function(letters) {
-	this.makeCall('/words/json', 'search', [letters]);
+cwwApp.prototype.search = function(params) {
+	if (typeof(params)=='string')
+		params = {letters:params};
+
+	paramObj = $.extend({letters:'',prefix:'',suffix:'',onBoard:true}, params);
+	this.makeCall('/words/json', 'advancedSearch', [paramObj]);
 };
 
 /**
  *	Return one of the standard lists of words.  The currently-recognized lists are:
  *	- 2letter
- *	- 3letter
+ *	- greek
  *	- qwithoutu
  */
 cwwApp.prototype.list = function(lname) {
@@ -117,7 +132,11 @@ cwwApp.prototype.makeCall = function(url, method, params) {
 	.success(function(data, status, jqxhr) {
 		var retval = [];
 		if(typeof(data.result[0]) == 'string') {
+			// simple search result
 			retval = data.result;
+		} else if(typeof(data.result.words) == 'object') {
+			// advanced search result
+			retval = data.result.words;
 		} else if (this.debug && typeof(data.error.message) == 'string') {
 			thisApp.lastSearchError = data.error;
 			if (typeof(thisApp.delegate.handleSearchError) == 'function')
