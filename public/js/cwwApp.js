@@ -131,13 +131,13 @@ cwwApp.prototype.makeCall = function(url, method, params) {
 	$.post(url, reqString, null, "json")
 	.success(function(data, status, jqxhr) {
 		var retval = [];
-		if(typeof(data.result[0]) == 'string') {
-			// simple search result
-			retval = data.result;
-		} else if(typeof(data.result.words) == 'object') {
-			// advanced search result
-			retval = data.result.words;
-		} else if (this.debug && typeof(data.error.message) == 'string') {
+		if (typeof(data.result) == 'object') {
+			if(typeof(data.result.words) == 'object')
+				// advanced search result
+				retval = data.result.words;
+			else if (typeof(data.result[0] == 'string'))
+				retval = data.result;
+		} else if (typeof(data.error.message) == 'string') {
 			thisApp.lastSearchError = data.error;
 			if (typeof(thisApp.delegate.handleSearchError) == 'function')
 				thisApp.delegate.handleSearchError(thisApp, data.error.message);

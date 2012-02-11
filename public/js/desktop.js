@@ -66,13 +66,13 @@ $(document).ready(function() {
 	$("#searchBtn").click(function(evt) {
 		evt.preventDefault();
 		var searchParams = {
-			letters: $("#searchLetters").val(),
-			prefix: $("#prefixLetters").val(),
-			suffix: $("#suffixLetters").val(),
-			onBoard: ($("#onBoard:checked").length > 0) ? true : false
+			letters:	$("#searchLetters").val(),
+			prefix:		$("#prefixLetters").val(),
+			suffix:		$("#suffixLetters").val(),
+			onBoard:	($("#onBoard:checked").length > 0) ? true : false
 		};
 		
-		app.setLocalValue('searchTerm', searchParams.letters);
+		app.setLocalValue('searchTerm', searchParams);
 		app.setLocalValue('resultCaption', "Words using " + searchParams.letters);
 		app.search(searchParams);
 	});
@@ -91,8 +91,14 @@ $(document).ready(function() {
 		$(".resultArea."+evt.target.id).show();
 	});
 	
-	if (app.getLocalValue("searchTerm") && app.getSearchResults()) {
-		$("#searchLetters").val(app.getLocalValue('searchTerm'));
+	// During startup we want to restore the last search state
+	oldTerms = app.getLocalValue("searchTerm");
+	oldResults = app.getSearchResults();
+	if (typeof(oldTerms) == 'object' && typeof(oldResults)=='object') {
+		$("#searchLetters").val(oldTerms.letters);
+		$("#prefixLetters").val(oldTerms.prefix);
+		$("#suffixLetters").val(oldTerms.suffix);
+		$("#onBoard").prop('checked', oldTerms.onBoard);
 		deskManager.renderWordTable();
 	}
 	

@@ -18,8 +18,9 @@ class Words_model extends CI_Model {
 			->select('trim(from word) as trimword', false)
 			->where("letters <@ '\{$letterStuff}'")
 			->order_by('len', "desc")
-			->order_by("trimword");
-		
+			->order_by("trimword")
+			->limit(1000);
+			
 		if (!empty($prefix))
 			$this->db->where("word like '$prefix%'");
 		
