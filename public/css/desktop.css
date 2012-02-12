@@ -12,6 +12,7 @@ div, section, footer, nav {
 div.mainContent {
 	margin-top: 10pt;
 	margin:0;
+	margin-left:10pt;
 	width:480pt;
 	float:left;
 }
