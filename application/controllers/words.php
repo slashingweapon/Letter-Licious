@@ -14,6 +14,8 @@ class Words extends Json_Controller {
 		$this->load->helper('letter');
 		$this->load->library('user_agent');
 		$this->load->model('words_model', '', true);
+		
+		$this->searchTime = microtime(true);
 	}
 	
 	/*	I had to write this because CodeIgniter's so-called date helper doesn't know how to properly
@@ -86,6 +88,8 @@ class Words extends Json_Controller {
 		if (!empty($unique_letters))
 			$words = $this->words_model->findWordsByEnumeratedLetters($unique_letters);
 		
+		$this->logSearch('search', implode('', $letters));
+		
 		return $words;
 	}
 	
@@ -109,7 +113,9 @@ class Words extends Json_Controller {
 
 		if (file_exists($fileName))
 			$words = file($fileName,FILE_IGNORE_NEW_LINES);
-			
+		
+		$this->logSearch('list', $listName);
+		
 		return $words;
 	}
 	
@@ -185,7 +191,34 @@ class Words extends Json_Controller {
 		
 		$retval->duration_ms = intval($intvl*1000);
 		
+		$this->logSearch('asearch', $retval->letters);
+		
 		return $retval;
 	}
 	
+	/**
+	 *	Log the search operation.
+	 *
+	 *	$type must be 'search', 'list', or 'error'
+	 *	$terms must be empty or a string.
+	 *
+	 *	If both of these requirements aren't met, then this function silently fails.
+	 */
+	private function logSearch($type='', $terms='') {
+		$timeTaken = intval((microtime(true) - $this->searchTime) * 1000);
+		$date = gmdate('Y-m-d H:i:s');
+		$referer = isset($_SERVER['HTTP_REFERER']) 
+			? @parse_url($_SERVER['HTTP_REFERER'], PHP_URL_HOST) 
+			: '';
+		$ip = isset($_SERVER['REMOTE_ADDR'])
+			? $_SERVER['REMOTE_ADDR']
+			: '';
+			
+		if (in_array($type, array('search', 'asearch', 'list', 'error')) && is_string($terms)) {
+			if ( ($fp = fopen($this->appinfo['searchLog'], 'a')) !== false) {
+				fwrite($fp, "$date\t$timeTaken\t$ip\t$referer\t$type\t$terms\n");
+				fclose($fp);
+			}
+		}
+	}
 }

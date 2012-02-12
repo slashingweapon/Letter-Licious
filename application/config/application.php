@@ -11,3 +11,6 @@ $config['manifest'] = array(
 	"/css/small-device.css",
 	"/word.png",
 );
+
+$config['searchLog'] = APPPATH . '../tmp/log/search_' . gmdate('Ymd');
+
