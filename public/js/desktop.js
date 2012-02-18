@@ -91,6 +91,35 @@ $(document).ready(function() {
 		$(".resultArea."+evt.target.id).show();
 	});
 	
+	// Contact Form
+	$("#contactForm button[type=submit]").click(function(evt) {
+		evt.preventDefault();
+		var req = {
+			jsonrpc: "2.0",
+			id: app.requestCounter++,
+			method: "contact",
+			params: [
+				$("contactForm [name=contactName]").val(),
+				$("contactForm [name=contactEmail]").val(),
+				$("contactForm [name=contactSubject]").val(),
+				$("contactForm [name=contactMessage]").val()
+			]
+		};
+		$.post('/words/json', JSON.stringify(req), null, "json")
+		 .success(function(data, status, jqxhr) {
+		 	if (typeof(data.result) == 'object') {
+				$(".resultArea").hide();
+				$(".resultArea.contactThanks").show();
+			} else if (typeof(data.error.message) == 'string') {
+				$(".resultArea.contact .error").html(data.error.message);
+			} else
+				alert("unknown error");
+		 })
+		 .fail(function() {
+		 	alert("Server failure.  Please try again later.");
+		 });
+	});
+	
 	// During startup we want to restore the last search state
 	oldTerms = app.getLocalValue("searchTerm");
 	oldResults = app.getSearchResults();

@@ -34,7 +34,7 @@
 					
 					<br/>
 					<label><input type="checkbox" id="onBoard" name="onBoard" checked/>
-						prefix and suffix are letters on the board</label>
+						prefix and suffix letters are on the board</label>
 				</form>
 			</div>
 			<p class="clearAll">&nbsp;</p>
@@ -61,6 +61,10 @@
 				your letters into the box above and click on "Cheat!", and you'll get a list of all
 				the matching words from the Official Tournament and Club Word List (TWL06).</p>
 				
+				<p>Use the prefix and suffix boxes if you want your word to begin or end with a 
+				specific string.  You can control whether the prefix/suffix letters are in your hand
+				or are on the board by using the checkbox.</p>
+				
 				<p>Your opponent will curse you.  That's our job.  To make your opponent 
 				curse you.  And maybe cry a little.</p>
 				
@@ -69,17 +73,16 @@
 			<div class="resultArea about hidden">
 				<h2>Why Cheat With Words?</h2>
 				
-				<p>My significant other (she knows who she is)
-				likes to play <a href="http://www.wordswithfriends.com/">Words With Friends</a>, and she's much better at it than I am.  Rather
-				than simply admit defeat, I started using word-finding sites to help me get a few
-				extra points.</p>
+				<p>My significant other (she knows who she is) likes to play <a
+				href="http://www.wordswithfriends.com/">Words With Friends</a>, Scrabble, and other
+				word games.  She's much better at them than I am, so instead of admitting defeat I
+				started using word-finding sites to help me get a few extra points.</p>
 				
 				<p>After a few weeks of trying various sites, and finding none that I really liked,
 				I decided to write my own.  Since I make much of my living writing PHP, it wasn't
 				a big leap.</p>
 
-				<p>I still don't win much, but now I'm losing by less than 100
-				points.</p>
+				<p>I still don't win much, but now I'm losing by less than 100 points.</p>
 				
 				<p>Mostly.</p>
 				
@@ -120,6 +123,38 @@
 				</div>
 			</div>
 
+			<div class="resultArea contact hidden">
+				<p class="error"> </p>
+				
+				<form id="contactForm">
+					<label>Your Name<br/>
+						<input type="text" size="32" name="contactName"/>
+					</label>
+					
+					<label>Your Email Address<br/>
+						<input type="text" size="32" name="contactEmail"/>
+					</label>
+
+					<label>Subject<br/>
+						<select name="contactSubject">
+							<option>Praise</option>
+							<option>Suggestion</option>
+							<option>Complaint</option>
+						</select>
+					</label><p/>
+					
+					<label>Message<br/>
+						<textarea rows=10 cols=70 name="contactMessage"></textarea>
+					</label><p/>
+					
+					<button type="submit">Send</button><p/>
+				</form>
+			</div>
+
+			<div class="resultArea contactThanks hidden">
+				<h2>Thank you for your feeback</h2>
+			</div>
+			
 			<hr/>
 		</div>
 
@@ -150,7 +185,8 @@
 				<span class="navCaption">Miscellany</span><br/>
 				<button id="help" title="Help">Help</button>
 				<button id="about" title="About this Site">About</button>
-				<button id="tech" title="tech">G&epsilon;&epsilon;&kappa;</button>
+				<button id="tech" title="Technology">G&epsilon;&epsilon;&kappa;</button>
+				<button id="contact" title="Contact Us">Email</button>
 			</div>
 		</nav>
 		

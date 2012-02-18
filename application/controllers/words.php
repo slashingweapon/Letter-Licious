@@ -221,4 +221,47 @@ class Words extends Json_Controller {
 			}
 		}
 	}
+
+	/**
+	 *	Sends contact email.  Expects the following strings:
+	 *	- name: sender name
+	 *	- address: sender's email address
+	 *	- subject: Subject of the email
+	 *	- body: body of message
+	 */
+	public function _json_contact($name='', $address='', $subject='', $body='') {
+		$this->load->library('template');
+		$this->load->library('email');
+
+		$safetyPattern = '/[^A-Z0-9_ -]/i';
+		$emailAddressPattern = "/\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b/i";
+		
+		$this->template->debugging = false;
+		
+		$validAddresses;
+		if (! preg_match($emailAddressPattern, $address, $validAddresses))
+			throw new Exception("You did not enter an email address!");
+		
+		$safeName = preg_replace($safetyPattern, ' ', $name);
+		$safeSubject = preg_replace($safetyPattern, ' ', $subject);
+		
+		// Stuff that goes into email headers has to be cleaned up a bit.  We can print the full
+		// version in the body without worry, but certain characters can be a problem for headers.
+		// I don't even want to think about what I could do with "Blah blah \r\nHeader: bad data".
+		$this->email->from($validAddresses[0], $safeName);
+		$this->email->subject("Cheat With Words Feedback: $safeSubject");
+		$this->email->to($this->appinfo['contactEmail']);
+		
+		$this->template->assign( array(
+			'fromEmail' => $validAddresses[0],
+			'fromName' => $name,
+			'subject' => $subject,
+			'body' => $body,
+		) );
+		$this->email->message( $this->template->fetch('contact.tpl') );
+		if(!$this->email->send())
+			throw new Exception("Server error: Unable to process email.");
+		
+		return true;
+	}
 }

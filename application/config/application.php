@@ -1,6 +1,6 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-$config['version'] = "r5.1";
+$config['version'] = "r7";
 
 $config['clientCache'] = 43200;	// 12 hours (in seconds) before a date check
 
@@ -13,4 +13,6 @@ $config['manifest'] = array(
 );
 
 $config['searchLog'] = APPPATH . '../tmp/log/search_' . gmdate('Ymd');
+
+$config['contactEmail'] = 'cj_h@beezwax.net';
 
