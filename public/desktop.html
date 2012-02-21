@@ -7,11 +7,13 @@
 		<script type="text/javascript" src="/js/cwwApp.js"></script>
 		<script type="text/javascript" src="/js/desktop.js"></script>
 
+		<meta name="description" content="A word-finding site for games like Scrabble, Words With Friends, and Jumble."/>
+		
 		<title>Cheat With Words</title>
 	</head>
 	<body>
 		<div id="fb-root"></div>
-		<h1>Cheat With Words</h1>
+		<h1><img src="banner.jpeg" alt="Cheat With Words"/></h1>
 		
 		<div class="mainContent">
 			<div name="searchTerms">
@@ -124,7 +126,7 @@
 			</div>
 
 			<div class="resultArea contact hidden">
-				<p class="error"> </p>
+				<p class="error"><!-- this section is for form submission errors.--></p>
 				
 				<form id="contactForm">
 					<label>Your Name<br/>
@@ -134,6 +136,7 @@
 					<label>Your Email Address<br/>
 						<input type="text" size="32" name="contactEmail"/>
 					</label>
+					<br class="clearAll"/>
 
 					<label>Subject<br/>
 						<select name="contactSubject">
@@ -142,11 +145,13 @@
 							<option>Complaint</option>
 						</select>
 					</label><p/>
+					<br class="clearAll"/>
 					
 					<label>Message<br/>
 						<textarea rows=10 cols=70 name="contactMessage"></textarea>
 					</label><p/>
 					
+					<br class="clearAll"/>
 					<button type="submit">Send</button><p/>
 				</form>
 			</div>
@@ -159,17 +164,18 @@
 		</div>
 
 		<div class="extraContent">
-			<!-- Place this tag where you want the +1 button to render -->
+			<!-- We're not doing advertisements right now.  Maybe never.  The site is nicer without them.
+			<!-- Place this tag where you want the +1 button to render --
 			<div class="g-plusone" data-href="http://www.cheatwithwords.com"></div>
-			<!-- Twitter -->
+			<!-- Twitter --
 			<div><a href="https://twitter.com/share" class="twitter-share-button" data-url="http://www.cheatwithwords.com/" data-size="medium">Tweet</a></div>
-			<!-- Facebook Like -->
+			<!-- Facebook Like --
 			<div class="fb-like" data-href="http://www.cheatwithwords.com" data-send="true" data-layout="button_count" data-width="200" data-show-faces="true" data-font="verdana"></div>
 
 			<div>&nbsp;</div>
 
 			<OBJECT classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://fpdownload.macromedia.com/get/flashplayer/current/swflash.cab" id="Player_1cd96e18-5712-4fc1-b44b-dca77afb7c8c"  WIDTH="160px" HEIGHT="600px"> <PARAM NAME="movie" VALUE="http://ws.amazon.com/widgets/q?rt=tf_cw&ServiceVersion=20070822&MarketPlace=US&ID=V20070822%2FUS%2Fchewitwor-20%2F8010%2F1cd96e18-5712-4fc1-b44b-dca77afb7c8c&Operation=GetDisplayTemplate"><PARAM NAME="quality" VALUE="high"><PARAM NAME="bgcolor" VALUE="#FFFFFF"><PARAM NAME="allowscriptaccess" VALUE="always"><embed src="http://ws.amazon.com/widgets/q?rt=tf_cw&ServiceVersion=20070822&MarketPlace=US&ID=V20070822%2FUS%2Fchewitwor-20%2F8010%2F1cd96e18-5712-4fc1-b44b-dca77afb7c8c&Operation=GetDisplayTemplate" id="Player_1cd96e18-5712-4fc1-b44b-dca77afb7c8c" quality="high" bgcolor="#ffffff" name="Player_1cd96e18-5712-4fc1-b44b-dca77afb7c8c" allowscriptaccess="always"  type="application/x-shockwave-flash" align="middle" height="600px" width="160px"></embed></OBJECT> <NOSCRIPT><A HREF="http://ws.amazon.com/widgets/q?rt=tf_cw&ServiceVersion=20070822&MarketPlace=US&ID=V20070822%2FUS%2Fchewitwor-20%2F8010%2F1cd96e18-5712-4fc1-b44b-dca77afb7c8c&Operation=NoScript">Amazon.com Widgets</A></NOSCRIPT>
-
+			-->
 		</div>
 
 		<div  class="clearAll"/>

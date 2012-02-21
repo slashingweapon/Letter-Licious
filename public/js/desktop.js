@@ -94,23 +94,24 @@ $(document).ready(function() {
 	// Contact Form
 	$("#contactForm button[type=submit]").click(function(evt) {
 		evt.preventDefault();
+		$(".resultArea.contact .error").html('');
 		var req = {
 			jsonrpc: "2.0",
 			id: app.requestCounter++,
 			method: "contact",
 			params: [
-				$("contactForm [name=contactName]").val(),
-				$("contactForm [name=contactEmail]").val(),
-				$("contactForm [name=contactSubject]").val(),
-				$("contactForm [name=contactMessage]").val()
+				$("#contactForm [name=contactName]").val(),
+				$("#contactForm [name=contactEmail]").val(),
+				$("#contactForm [name=contactSubject]").val(),
+				$("#contactForm [name=contactMessage]").val()
 			]
 		};
 		$.post('/words/json', JSON.stringify(req), null, "json")
 		 .success(function(data, status, jqxhr) {
-		 	if (typeof(data.result) == 'object') {
+		 	if (typeof(data.result) != 'undefined') {
 				$(".resultArea").hide();
 				$(".resultArea.contactThanks").show();
-			} else if (typeof(data.error.message) == 'string') {
+			} else if (typeof(data.error) != 'undefined' && typeof(data.error.message) == 'string') {
 				$(".resultArea.contact .error").html(data.error.message);
 			} else
 				alert("unknown error");
@@ -131,28 +132,4 @@ $(document).ready(function() {
 		deskManager.renderWordTable();
 	}
 	
-	<!-- Google +1 button-->
-	var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
-	po.src = 'https://apis.google.com/js/plusone.js';
-	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
-
 });
-
-// Facebook API
-(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));
-
-!function(d,s,id) {
-	var js,fjs=d.getElementsByTagName(s)[0];
-	if(!d.getElementById(id)) {
-		js=d.createElement(s);
-		js.id=id;
-		js.src="//platform.twitter.com/widgets.js";
-		fjs.parentNode.insertBefore(js,fjs);
-	}
-}(document,"script","twitter-wjs");

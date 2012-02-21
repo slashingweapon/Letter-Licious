@@ -14,5 +14,5 @@ $config['manifest'] = array(
 
 $config['searchLog'] = APPPATH . '../tmp/log/search_' . gmdate('Ymd');
 
-$config['contactEmail'] = 'cj_h@beezwax.net';
+$config['contactEmail'] = 'cj@vbbn.com';
 
