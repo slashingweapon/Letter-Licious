@@ -34,9 +34,11 @@ desktopController.prototype.renderWordTable = function() {
 	$(".resultArea").hide();
 	
 	$("#wordTable caption").html(this.application.getLocalValue('resultCaption'));
-	currentWords = this.application.getSearchResults();
+	var currentWords = this.application.getSearchResults();
 	
 	if (currentWords.length > 0) {
+		currentWords = this.sortWords(currentWords);
+		
 		for(idx=0; idx<currentWords.length; idx++) {
 			if (idx % this.currentColumns == 0) {
 				html += "<tr>";
@@ -54,6 +56,54 @@ desktopController.prototype.renderWordTable = function() {
 		$(".resultArea.noResults").show();
 	}
 	$("#wordTable tbody").html(html);
+}
+
+desktopController.prototype.sortWords = function(wordList) {
+	var prefs = this.application.getLocalValue("searchPrefs");
+	var sfunc;
+	
+	switch (prefs.sort) {
+		case "first":
+			sfunc = function(left,right) {
+				retval = 0;
+				if (left < right)
+					retval = -1;
+				else if (left > right)
+					retval = 1;
+				return retval;
+			};
+			break;
+		case "last":
+			sfunc = function(left,right) {
+				left = left.split("").reverse().join("");
+				right = right.split("").reverse().join("");
+				retval = 0;
+				if (left < right)
+					retval = -1;
+				else if (left > right)
+					retval = 1;
+				return retval;
+			}
+			break;
+		case "length":
+		default:
+			sfunc = function(left,right) {
+				var retval = 0;
+				if (left.length > right.length)
+					retval = -1;
+				else if (left.length < right.length)
+					retval = 1;
+				else if (left < right)
+					retval = -1;
+				else if (left > right)
+					retval = 1;
+				return retval;
+			};
+			break;
+	}
+	wordList = wordList.sort(sfunc);
+	
+	return wordList;
 }
 
 desktopController.prototype.savePrefs = function() {
@@ -87,6 +137,9 @@ desktopController.prototype.restorePrefs = function() {
 	this.savePrefs();
 }
 
+/*
+	How nice we are, not putting anything into the global name space except a couple of classes.
+*/
 $(document).ready(function() {
 	
 	var deskManager = new desktopController();
@@ -125,6 +178,7 @@ $(document).ready(function() {
 	});
 	
 	// Sort/Group preferences
+	// Come to think of it, this might be a good technique to use for search terms/results, too.
 	$("#sortPrefs input").change(function(evt) {
 		deskManager.savePrefs();
 		deskManager.renderWordTable();
@@ -160,7 +214,7 @@ $(document).ready(function() {
 		 });
 	});
 	
-	// During startup we want to restore the last search state
+	// During startup we want to restore the last search terms and results
 	oldTerms = app.getLocalValue("searchTerm");
 	oldResults = app.getSearchResults();
 	if (typeof(oldTerms) == 'object' && typeof(oldResults)=='object') {
