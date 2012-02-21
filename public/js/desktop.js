@@ -198,14 +198,16 @@ desktopController.prototype.restorePrefs = function() {
 	var prefs = this.application.getLocalValue("searchPrefs", prefs);
 	
 	// read, clean, reflect in UI, and then save the cleaned result
-	if (typeof(prefs.group) == "boolean" && prefs.group)
-		$("#sortPrefs input[name=group][value=group]").attr("checked",true);
-	if (typeof(prefs.sort) == "string") {
-		var sortInput = $("#sortPrefs input[name=sort][value="+prefs.sort+"]");
-		if (sortInput.length)
-			sortInput.attr("checked",true);
-		else
-			$("#sortPrefs input[name=sort]").first().attr("checked",true);
+	if (prefs) {
+		if (typeof(prefs.group) == "boolean" && prefs.group)
+			$("#sortPrefs input[name=group][value=group]").attr("checked",true);
+		if (typeof(prefs.sort) == "string") {
+			var sortInput = $("#sortPrefs input[name=sort][value="+prefs.sort+"]");
+			if (sortInput.length)
+				sortInput.attr("checked",true);
+			else
+				$("#sortPrefs input[name=sort]").first().attr("checked",true);
+		}
 	}
 	
 	this.savePrefs();
