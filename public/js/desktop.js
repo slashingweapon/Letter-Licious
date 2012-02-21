@@ -56,14 +56,22 @@ desktopController.prototype.renderGroupedWordTable = function(groupedList) {
 	var keyList = [];
 	var group = '';
 	
+	// Find out how the list is grouped
 	for (var name in groupedList) {
 		if (name == "_group")
 			group = groupedList._group;
 		else
 			keyList.push(name);
 	}
-	if (group == 'length')
-		keyList.reverse();
+	
+	// Length goes from highest to lowest.  All other groupings go alphabetically.
+	if (group == 'length') {
+		keyList.sort(function(left,right) {
+			return parseInt(right) - parseInt(left);
+		} );
+	} else {
+		keyList.sort();
+	}
 	
 	for(var idx in keyList) {
 		var key = keyList[idx];
@@ -159,7 +167,7 @@ desktopController.prototype.sortWords = function(wordList) {
 				return retval;
 			};
 			ifunc = function(item) {
-				return ''+item.length;
+				return item.length;
 			};
 			break;
 	}
@@ -194,20 +202,24 @@ desktopController.prototype.savePrefs = function() {
 	this.application.setLocalValue("searchPrefs", prefs);
 }
 
+// read, clean, reflect in UI, and then save the cleaned result
 desktopController.prototype.restorePrefs = function() {
-	var prefs = this.application.getLocalValue("searchPrefs", prefs);
-	
-	// read, clean, reflect in UI, and then save the cleaned result
-	if (prefs) {
-		if (typeof(prefs.group) == "boolean" && prefs.group)
-			$("#sortPrefs input[name=group][value=group]").attr("checked",true);
-		if (typeof(prefs.sort) == "string") {
-			var sortInput = $("#sortPrefs input[name=sort][value="+prefs.sort+"]");
-			if (sortInput.length)
-				sortInput.attr("checked",true);
-			else
-				$("#sortPrefs input[name=sort]").first().attr("checked",true);
-		}
+	var prefs = {
+		group: true,
+		sort: "length"
+	};
+	var savedPrefs = this.application.getLocalValue("searchPrefs", prefs);
+	if (typeof(savedPrefs) == "object") 
+		prefs = $.extend(prefs, savedPrefs);
+		
+	if (typeof(prefs.group) == "boolean" && prefs.group)
+		$("#sortPrefs input[name=group][value=group]").attr("checked",true);
+	if (typeof(prefs.sort) == "string") {
+		var sortInput = $("#sortPrefs input[name=sort][value="+prefs.sort+"]");
+		if (sortInput.length)
+			sortInput.attr("checked",true);
+		else
+			$("#sortPrefs input[name=sort]").first().attr("checked",true);
 	}
 	
 	this.savePrefs();
