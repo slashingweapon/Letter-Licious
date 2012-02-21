@@ -66,6 +66,14 @@ label {
 	margin-right:8pt;
 }
 
+#sortPrefs label {
+	float: none;
+}
+
+#contactForm label {
+	float: none;
+}
+
 button {
 	font-size:18px;
 	font-weight:bold;

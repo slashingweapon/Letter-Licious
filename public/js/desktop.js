@@ -10,25 +10,25 @@
  *		cwwApp.js
  *
  */
-function desktopDelegate() {
+function desktopController() {
 	this.currentColumns = 5;
 	this.application = null;
 }
 
-desktopDelegate.prototype.handleSearchStart = function(app) {
+desktopController.prototype.handleSearchStart = function(app) {
 	$(".resultArea").hide();
 	$(".resultArea.searching").show();
 }
 
-desktopDelegate.prototype.handleSearchError = function(app, message) {
+desktopController.prototype.handleSearchError = function(app, message) {
 
 }
 
-desktopDelegate.prototype.handleSearchEnd = function(app) {
+desktopController.prototype.handleSearchEnd = function(app) {
 	this.renderWordTable();
 }
 
-desktopDelegate.prototype.renderWordTable = function() {
+desktopController.prototype.renderWordTable = function() {
 	var html = "";
 	
 	$(".resultArea").hide();
@@ -56,11 +56,44 @@ desktopDelegate.prototype.renderWordTable = function() {
 	$("#wordTable tbody").html(html);
 }
 
-var deskManager = new desktopDelegate();
-var app = new cwwApp(deskManager);
-deskManager.application = app;
+desktopController.prototype.savePrefs = function() {
+	var prefs = {
+		group: false,
+		sort: "first"
+	};
+	
+	prefs.group = $("#sortPrefs input[name=group]:checked").val() ? true : false;
+	prefs.sort = $("#sortPrefs input[name=sort]:checked").val();
+	if(!prefs.sort)	// default to the first radio button
+		prefs.sort = $("#sortPrefs input[name=sort]").val();
+		
+	this.application.setLocalValue("searchPrefs", prefs);
+}
+
+desktopController.prototype.restorePrefs = function() {
+	var prefs = this.application.getLocalValue("searchPrefs", prefs);
+	
+	// read, clean, reflect in UI, and then save the cleaned result
+	if (typeof(prefs.group) == "boolean" && prefs.group)
+		$("#sortPrefs input[name=group][value=group]").attr("checked",true);
+	if (typeof(prefs.sort) == "string") {
+		var sortInput = $("#sortPrefs input[name=sort][value="+prefs.sort+"]");
+		if (sortInput.length)
+			sortInput.attr("checked",true);
+		else
+			$("#sortPrefs input[name=sort]").first().attr("checked",true);
+	}
+	
+	this.savePrefs();
+}
 
 $(document).ready(function() {
+	
+	var deskManager = new desktopController();
+	var app = new cwwApp(deskManager);
+	deskManager.application = app;
+	
+	deskManager.restorePrefs();
 	
 	// Hook up the search box
 	$("#searchBtn").click(function(evt) {
@@ -90,6 +123,12 @@ $(document).ready(function() {
 		$(".resultArea").hide();
 		$(".resultArea."+evt.target.id).show();
 	});
+	
+	// Sort/Group preferences
+	$("#sortPrefs input").change(function(evt) {
+		deskManager.savePrefs();
+		deskManager.renderWordTable();
+	} );
 	
 	// Contact Form
 	$("#contactForm button[type=submit]").click(function(evt) {

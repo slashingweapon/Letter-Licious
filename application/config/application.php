@@ -5,6 +5,7 @@ $config['version'] = "r7";
 $config['clientCache'] = 43200;	// 12 hours (in seconds) before a date check
 
 $config['manifest'] = array(
+	"/mobile.html",
 	"/js/jquery-1.7.1.min.js",
 	"/js/cwwApp.js",
 	"/js/mobile.js",
