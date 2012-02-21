@@ -39,17 +39,10 @@ desktopController.prototype.renderWordTable = function() {
 	if (currentWords.length > 0) {
 		currentWords = this.sortWords(currentWords);
 		
-		for(idx=0; idx<currentWords.length; idx++) {
-			if (idx % this.currentColumns == 0) {
-				html += "<tr>";
-			}
-			html += "<td>" + currentWords[idx] + "</td>";
-			if (idx % this.currentColumns == this.currentColumns - 1) {
-				html += "</tr>"
-			}
-		}
-		if (idx % this.currentColumns != this.currentColumns - 1) {
-			html += "</tr>";
+		if (typeof(currentWords._group) != 'undefined') {
+			html = this.renderGroupedWordTable(currentWords);
+		} else {
+			html = this.renderRows(currentWords);
 		}
 		$(".resultArea.results").show();
 	} else {
@@ -58,9 +51,69 @@ desktopController.prototype.renderWordTable = function() {
 	$("#wordTable tbody").html(html);
 }
 
+desktopController.prototype.renderGroupedWordTable = function(groupedList) {
+	var html = '';
+	var keyList = [];
+	var group = '';
+	
+	for (var name in groupedList) {
+		if (name == "_group")
+			group = groupedList._group;
+		else
+			keyList.push(name);
+	}
+	if (group == 'length')
+		keyList.reverse();
+	
+	for(var idx in keyList) {
+		var key = keyList[idx];
+		var title = '';
+		
+		switch(group) {
+			case 'first':
+				title = 'words starting with ' + key;
+				break;
+			case 'last':
+				title = 'words ending with ' + key;
+				break;
+			case 'length':
+				title = '' + key + '-letter words';
+				break;
+			default:
+				title = key;
+				break;
+		}
+		
+		html += "<tr><td class='groupRow' colspan='5'>"+title+"</td></tr>";
+		html += this.renderRows(groupedList[keyList[idx]]);
+	}
+	
+	return html;
+}
+
+desktopController.prototype.renderRows = function(wordList) {
+	var html = '';
+	
+	for(idx=0; idx<wordList.length; idx++) {
+		if (idx % this.currentColumns == 0) {
+			html += "<tr>";
+		}
+		html += "<td>" + wordList[idx] + "</td>";
+		if (idx % this.currentColumns == this.currentColumns - 1) {
+			html += "</tr>"
+		}
+	}
+	if (idx % this.currentColumns != this.currentColumns - 1) {
+		html += "</tr>";
+	}
+
+	return html;
+};
+
 desktopController.prototype.sortWords = function(wordList) {
 	var prefs = this.application.getLocalValue("searchPrefs");
 	var sfunc;
+	var ifunc;	// a function which returns the value on which a string is grouped
 	
 	switch (prefs.sort) {
 		case "first":
@@ -71,6 +124,9 @@ desktopController.prototype.sortWords = function(wordList) {
 				else if (left > right)
 					retval = 1;
 				return retval;
+			};
+			ifunc = function(item) {
+				return item[0];
 			};
 			break;
 		case "last":
@@ -83,7 +139,10 @@ desktopController.prototype.sortWords = function(wordList) {
 				else if (left > right)
 					retval = 1;
 				return retval;
-			}
+			};
+			ifunc = function(item) {
+				return item[item.length-1];
+			};
 			break;
 		case "length":
 		default:
@@ -99,10 +158,25 @@ desktopController.prototype.sortWords = function(wordList) {
 					retval = 1;
 				return retval;
 			};
+			ifunc = function(item) {
+				return ''+item.length;
+			};
 			break;
 	}
 	wordList = wordList.sort(sfunc);
 	
+	if (prefs.group) {
+		var grph = {};
+		grph._group = prefs.sort;
+		for (var idx=0; idx<wordList.length; idx++) {
+			var section = ifunc(wordList[idx]);
+			if (typeof(grph[section]) == 'undefined')
+				grph[section] = [];
+			grph[section].push(wordList[idx]);
+		}
+		wordList = grph;
+	}
+
 	return wordList;
 }
 

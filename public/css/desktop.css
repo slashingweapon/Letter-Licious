@@ -80,6 +80,7 @@ button {
 	padding-top: 4pt;
 	padding-bottom: 4pt;
 	color:white;
+	background-color: #008;
 	background: -webkit-linear-gradient(#00f, #008);
 	background: -moz-linear-gradient(top, #00f, #008);
 	border-radius: 5px;
@@ -106,6 +107,14 @@ button#searchBtn {
 #wordTable td {
 	text-align: left;
 	text-transform:lowercase;
+}
+
+#wordTable .groupRow {
+	color:white;
+	background-color: #008;
+	background: -webkit-linear-gradient(#00f, #008);
+	background: -moz-linear-gradient(top, #00f, #008);
+	text-align: center;
 }
 
 .resultArea {
