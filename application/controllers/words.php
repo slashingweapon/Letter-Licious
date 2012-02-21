@@ -26,23 +26,12 @@ class Words extends Json_Controller {
 	}
 	
 	public function index() {
-		$page = "desktop.html";
-		if ($this->agent->is_mobile())
-			$page = "mobile.html";
+		$this->load->helper('url');
 		
-		$file = APPPATH . "../public/$page";
-		if (file_exists($file)) {
-			$lmod = filemtime($file);
-			$maxAge = $this->appinfo['clientCache'];
-			header("Cache-control: public, max-age=$maxAge");
-			$date = $this->httpDate($lmod);
-			header("Last-Modified: $date");
-			$date = $this->httpDate(time()+$maxAge);
-			header("Expires: $date");
-			
-			readfile($file);
-		} else
-			show_error("Could not locate $page ($file)",500);
+		if ($this->agent->is_mobile())
+			redirect("/mobile.html");
+		else
+			redirect("/desktop.html");
 	}
 	
 	public function manifest() {
