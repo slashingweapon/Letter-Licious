@@ -124,6 +124,7 @@ class Words extends Json_Controller {
 	 *	- duration_ms How long it took to perform the search, in milliseconds.
 	 */
 	public function _json_advancedSearch($terms) {
+		$blanks = 0;
 		$retval = (object)array(
 			'letters' => '',
 			'duration_ms' => 0,
@@ -135,8 +136,10 @@ class Words extends Json_Controller {
 		
 		if (!isset($terms->letters) || !is_string($terms->letters))
 			throw new Exception("Expected string for p1.letters");
-		else
+		else {
+			$blanks = substr_count($terms->letters, '?');
 			$terms->letters = filterString($terms->letters);
+		}
 		
 		// set some default values for other parts of the object, to simplify our logic later
 		if (!isset($terms->prefix) || !is_string($terms->prefix))	
@@ -174,10 +177,15 @@ class Words extends Json_Controller {
 		$retval->letters = implode('', $searchLetters);
 		$intvl = 1;
 		
-		if (!empty($uniqueLetters))
-			$retval->words = $this->words_model->findWordsByEnumeratedLetters($uniqueLetters, 
-				$terms->prefix, $terms->suffix, $intvl);
-		
+		if (!empty($uniqueLetters)) {
+			if (!$blanks) {
+				$retval->words = $this->words_model->findWordsByEnumeratedLetters($uniqueLetters, 
+					$terms->prefix, $terms->suffix, $intvl);
+			} else {
+				$retval->words = $this->words_model->findWordsBySetDifference($uniqueLetters, 
+					$blanks, $terms->prefix, $terms->suffix, $intvl);
+			}
+		}
 		$retval->duration_ms = intval($intvl*1000);
 		
 		$this->logSearch('asearch', $retval->letters);
