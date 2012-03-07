@@ -88,8 +88,8 @@ cwwApp.prototype.search = function(params) {
 	if (typeof(params)=='string')
 		params = {letters:params};
 
-	paramObj = $.extend({letters:'',prefix:'',suffix:'',onBoard:true}, params);
-	this.makeCall('/words/json', 'advancedSearch', [paramObj]);
+	var paramObj = $.extend({letters:'',prefix:'',suffix:'',onBoard:true}, params);
+	this.makeCall('/words/json', 'advancedSearch', paramObj);
 };
 
 /**
@@ -99,7 +99,7 @@ cwwApp.prototype.search = function(params) {
  *	- qwithoutu
  */
 cwwApp.prototype.list = function(lname) {
-	this.makeCall('/words/json', 'list', [lname]);
+	this.makeCall('/words/json', 'list', lname);
 };
 
 
@@ -111,44 +111,128 @@ cwwApp.prototype.list = function(lname) {
  *	@param string method The method to call
  *	@param array params An array of parameters to pass to the method
  */
-cwwApp.prototype.makeCall = function(url, method, params) {
-	var req = new Object();
-	req.jsonrpc = "2.0";
-	req.method = method;
-	req.id = this.requestCounter++;
-	req.params = params;
-	thisApp = this;
-	
-	var reqString = JSON.stringify(req);
-	if (this.debug)
-		console.log(reqString);
+cwwApp.prototype.makeCall = function(url, method, param) {
+	var thisApp = this;
 	
 	this.setLocalValue('cww_searchResults', []);
 	
 	if (typeof(this.delegate.handleSearchStart) == 'function')
 		this.delegate.handleSearchStart(this);
-		
-	$.post(url, reqString, null, "json")
-	.success(function(data, status, jqxhr) {
-		var retval = [];
-		if (typeof(data.result) == 'object') {
-			if(typeof(data.result.words) == 'object')
-				// advanced search result
-				retval = data.result.words;
-			else if (typeof(data.result[0] == 'string'))
-				retval = data.result;
-		} else if (typeof(data.error.message) == 'string') {
-			thisApp.lastSearchError = data.error;
-			if (typeof(thisApp.delegate.handleSearchError) == 'function')
-				thisApp.delegate.handleSearchError(thisApp, data.error.message);
-		}
-		thisApp.setLocalValue('cww_searchResults', retval);
+	
+	$.jsonRPC(url, method, param)
+	 .done(function(data) {
+	 	var retval = [];
 
+		if(typeof(data.words) == 'object')
+			// advanced search result
+			retval = data.words;
+		else if (typeof(data[0] == 'string'))
+			retval = data;
+
+		thisApp.setLocalValue('cww_searchResults', retval);
 		if (typeof(thisApp.delegate.handleSearchEnd) == 'function')
 			thisApp.delegate.handleSearchEnd(this);
-	})
-	.fail(function() {
-		if (typeof(thisApp.delegate.handleSearchError) == 'function')
-			thisApp.delegate.handleSearchError(this, "JSON RPC failed");
-	});	
+	 })
+	 .fail(function(jqx, statusString, exc) {
+		if (typeof(thisApp.delegate.handleSearchError) == 'function') {
+			var msg;
+			
+			if (exc instanceof JSONRPCError)
+				msg = "Method failure: " + exc;
+			else
+				msg = "Server failure: " + statusString + " / " + exc;
+				
+			thisApp.delegate.handleSearchError(this, msg);
+		}
+	 });	 
 }
+
+
+/**
+ *	These bits are borrowed from my JsonTools library.  I'm just shoving it all into fewer files.
+ *	It is generally considered "neater" that way, as it is fewer files to serve.
+ */
+ 
+function JSONRPCError(obj) {
+	jQuery.extend(this, obj);
+	this.toString = function() { return this.message; }
+}
+
+(function( $ ) {
+	
+	jQuery.extend({
+		/**
+		 *	Given a URL, method name, and any other arbitrary parameters, creates a JSON request
+		 *	and sends it off to the server.  The return value is a jQuery jqXHR object.  You may
+		 *	attach completion functions to it via:
+		 *	
+		 *	.done(function(data, statusString, jqx) {...} )
+		 *	.fail(function(jqx, statusString, exc) {...} )
+		 *	.always(function(jqx, statusString) {...} )
+		 *
+		 *	For example, you can do this:
+		 *	var jqx = jsonRPC('/words/json', 'someMethod', 'param1', 'param2', 'param3')
+		 *		.done(function(data) {
+		 *			console.log(data.result);
+		 *		});
+		 *
+		 *	For convenience/debugging, we set jqx.jsonRequestObject to be the un-serialized 
+		 *	request object.
+		 *
+		 *	You can easily have a situation where the JSON call succeeded, but the method
+		 *	you called returned an error.  Traditionally, what you ended up doing is detecting
+		 *	errors both in your fail() handler (for protocol-level errors) and in your
+		 *	done() handler (for method-level errors)  I have extended the parsing function 
+		 *	for jsonRPC requests so method errors gets passed to your fail() handler.  You 
+		 *	can easily detect this situation because your fail()
+		 *	handler is called and the third parameter  (exc in our examples above) an 
+		 *	instance of JSONRPCError.
+		 */
+		jsonRPC: function(url, method) {
+			// Keep a static counter, so we can give a unique ID to each request.  This technique
+			// even survives a function name change.
+			arguments.callee.requestCount = arguments.callee.requestCount || 0;
+			arguments.callee.requestCount++;
+			
+			var req = {
+				jsonrpc: "2.0",
+				id: arguments.callee.requestCount,
+				method: method,
+				params: []
+			};
+			
+			// take the extra parameters and push them onto the params array.
+			for (var idx=2; idx<arguments.length; idx++)
+				req.params.push(arguments[idx]);
+			
+			var retval = jQuery.ajax({
+				type:'post',
+				url: url,
+				contentType: 'application/json',
+				data: JSON.stringify(req),
+				dataType: 'json_rpc_response',
+				converters: {
+					"text json_rpc_response": function(textValue) {
+						var retval = jQuery.parseJSON(textValue);
+						
+						if (typeof(retval) == 'object') {
+							if (typeof(retval.error) == 'object') {
+								retval = new JSONRPCError(retval.error);
+								throw retval;
+							} else if (typeof(retval.result) != 'undefined') {
+								retval = retval.result;
+							} else
+								throw "Invalid JSON response";
+						} else
+							throw "Invalid JSON response";
+						
+						return retval;
+					}
+				}
+			});
+			retval.jsonRequestObject = req;
+			
+			return retval;
+		}
+	});
+})(jQuery);

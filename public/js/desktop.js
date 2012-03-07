@@ -21,7 +21,9 @@ desktopController.prototype.handleSearchStart = function(app) {
 }
 
 desktopController.prototype.handleSearchError = function(app, message) {
-
+	$(".resultArea").hide();
+	$(".resultArea.searchError p").html(message);
+	$(".resultArea.searchError").show();
 }
 
 desktopController.prototype.handleSearchEnd = function(app) {
