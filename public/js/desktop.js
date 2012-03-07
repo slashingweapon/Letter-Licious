@@ -278,29 +278,22 @@ $(document).ready(function() {
 	$("#contactForm button[type=submit]").click(function(evt) {
 		evt.preventDefault();
 		$(".resultArea.contact .error").html('');
-		var req = {
-			jsonrpc: "2.0",
-			id: app.requestCounter++,
-			method: "contact",
-			params: [
-				$("#contactForm [name=contactName]").val(),
-				$("#contactForm [name=contactEmail]").val(),
-				$("#contactForm [name=contactSubject]").val(),
-				$("#contactForm [name=contactMessage]").val()
-			]
-		};
-		$.post('/words/json', JSON.stringify(req), null, "json")
-		 .success(function(data, status, jqxhr) {
-		 	if (typeof(data.result) != 'undefined') {
-				$(".resultArea").hide();
-				$(".resultArea.contactThanks").show();
-			} else if (typeof(data.error) != 'undefined' && typeof(data.error.message) == 'string') {
-				$(".resultArea.contact .error").html(data.error.message);
-			} else
-				alert("unknown error");
+
+		$.jsonRPC('/words/json', "contact", 				
+			$("#contactForm [name=contactName]").val(),
+			$("#contactForm [name=contactEmail]").val(),
+			$("#contactForm [name=contactSubject]").val(),
+			$("#contactForm [name=contactMessage]").val()
+		)
+		 .done(function(data) {
+			$(".resultArea").hide();
+			$(".resultArea.contactThanks").show();
 		 })
-		 .fail(function() {
-		 	alert("Server failure.  Please try again later.");
+		 .fail(function(jqx, statusString, exc) {
+		 	if (exc instanceof JSONRPCError)
+				$(".resultArea.contact .error").html(exc.message);
+			else
+			 	$(".resultArea.contact .error").html("Server failure.  Please try again later. (" + exc +")");
 		 });
 	});
 	

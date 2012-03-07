@@ -58,6 +58,10 @@ input[type=text] {
 	font-size:18pt;
 }
 
+textarea {
+	font-size:12pt;
+}
+
 label {
 	float: left;
 	text-transform:lowercase;
