@@ -1,12 +1,84 @@
 body {
-	font-family:helvetica;
+	font-family: 'Quicksand', sans-serif;
 	font-size:16pt;
 	margin:auto;
 	width:720pt;
 }
 
+.clearAll {
+	clear:both;
+}
+
+input[type=text] {
+	font-size:18pt;
+	border: 2pt solid #ccc;
+	border-radius: 6pt;
+}
+
+input[type=text]:focus {
+	font-size:18pt;
+	border: 2pt solid #555;
+	border-radius: 6pt;
+	outline:none;
+}
+
+form[name=searchTerms] > div {
+	float:left;
+}
+
+#searchBtn {
+	font-size:18px;
+	text-transform: uppercase;
+	padding-top: 5pt;
+	padding-bottom: 5pt;
+	color:white;
+	background-color: #008;
+	background: -webkit-linear-gradient(#00f, #008);
+	background: -moz-linear-gradient(top, #00f, #008);
+	border: 2.5pt solid #ccc;
+	border-radius: 6pt;
+	box-shadow: 5pt 5pt 10pt #aaa;
+}
+
+label {
+	text-transform:uppercase;
+	font-size:8pt;
+	font-weight:bold;
+	color:#555;
+	margin-right:8pt;
+}
+
+#sortPrefs label {
+	float: none;
+}
+
+#sortPrefs legend {
+	text-transform:uppercase;
+	font-size:8pt;
+	font-weight:bold;
+	color:#555;
+	margin-right:8pt;
+}
+
+#sortPrefs fieldset label {
+	color:#ccc;
+}
+
+#sortPrefs fieldset {
+	border:none;
+}
+
+#navigationSection {
+	float:left;
+}
+
+.mainContent {
+	float:left;
+}
+
+/*
 div, section, footer, nav {
-/*	border: 1px solid black; */
+
 }
 
 div.mainContent {
@@ -24,10 +96,6 @@ div.extraContent {
 	float:right;
 }
 
-.clearAll {
-	clear:both;
-}
-
 .hidden {
 	display:none;
 }
@@ -38,11 +106,7 @@ section, footer, nav {
 }
 
 h1 {
-/*	background: -webkit-linear-gradient(#008, #00f);
-	background: -moz-linear-gradient(top, #008, #00f);
-*/
 	color:white;
-	text-align:center;
 	font-size:22pt;
 	margin-top:0;
 	padding-top:8pt;
@@ -68,10 +132,6 @@ label {
 	font-size:14pt;
 	color:#888;
 	margin-right:8pt;
-}
-
-#sortPrefs label {
-	float: none;
 }
 
 #contactForm label {
@@ -169,3 +229,4 @@ footer, footer a, footer a:link, footer a:visited {
 	margin-right:10pt;
 }
 
+*/

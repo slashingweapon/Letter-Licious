@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<meta charset="UTF-8">
+
+		<link href='http://fonts.googleapis.com/css?family=Quicksand:400,700' rel='stylesheet' type='text/css'>
 		<link href="/css/desktop.css" type= "text/css" rel="stylesheet"/>
 		
 		<script type="text/javascript" src="/js/jquery-1.7.1.min.js"></script>
@@ -13,31 +16,77 @@
 	</head>
 	<body>
 		<div id="fb-root"></div>
-		<h1><img src="banner.jpeg" alt="Cheat With Words"/></h1>
+		<h1><img src="banner.png" alt="Cheat With Words"/></h1>
+
+		<hr/>
 		
-		<div class="mainContent">
-			<div name="searchTerms">
-				<form>
+		<section id="controlSection">
+			<form name="searchTerms">
+				<div>
 					<label>prefix<br/>
-					<input type="text" id="prefixLetters" name="prefix" size="4"
+					<input type="text" id="prefixLetters" name="prefix" size="3" tabindex="10"
 						autocorrect="off" autocapitalize="characters"/></label>
-	
+				</div>
+				
+				<div>
 					<label>your letters<br/>
-					<input id="searchLetters" type="text" name="search" size="15" 
+					<input id="searchLetters" type="text" name="search" size="23" tabindex="20"
 						value="" autocorrect="off" autocapitalize="characters"
 						placeholder="your letters here"/></label>
-	
-					<label>Suffix<br/>
-					<input type="text" id="suffixLetters" name="suffix" size="4"
-					autocorrect="off" autocapitalize="characters"/></label>
-					
-					<label><br/>
-					<button id="searchBtn">Cheat!</button></label>
-					
 					<br/>
-					<label><input type="checkbox" id="onBoard" name="onBoard" checked/>
+					<label><input type="checkbox" id="onBoard" name="onBoard" checked tabindex="40"/>
 						prefix and suffix letters are on the board</label>
-				</form>
+				</div>
+				
+				<div>
+					<label>Suffix<br/>
+					<input type="text" id="suffixLetters" name="suffix" size="3" tabindex="30"
+					autocorrect="off" autocapitalize="characters"/></label>
+				</div>
+				
+				<div>
+					<label><br/>
+					<button id="searchBtn" tabindex="50">Cheat</button></label>
+				</div>				
+			</form>
+
+			
+			<form id="sortPrefs">
+				<label><input type="checkbox" name="group" value="group"> Group results</label></br>
+				
+				<fieldset>
+					<legend>Sort By</legend>
+					<label><input type="radio" name="sort" value="length"/> Length</label><br/>
+					<label><input type="radio" name="sort" value="first"/> First letter</label><br/>
+					<label><input type="radio" name="sort" value="last"/> Last letter</label><br/>
+				</fieldset>
+			</form>
+		</section>
+		
+		<hr/>
+		
+		<section id="navigationSection">
+			<div class="listNav">
+				<span class="navCaption">special word lists</span><br/>
+				<ul>
+					<li><button id="2letter" title="Two-Letter Words">2L</button></li>
+					<li><button id="greek" title="The Greek alphabet are all valid words, and can be pluralized with -s.">&Delta;&Xi;&Omega;</button></li>
+					<li><button id="qwithoutu" title="Words containing Q but not U.">Q!U</button></li>
+				</ul>
+			</div>
+			<div class="etcNav">
+				<span class="navCaption">Miscellany</span><br/>
+				<ul>
+					<li><button id="help" title="Help">Help</button></li>
+					<li><button id="about" title="About this Site">About</button></li>
+					<li><button id="tech" title="Technology">G&epsilon;&epsilon;&kappa;</button></li>
+					<li><button id="contact" title="Contact Us">Email</button></li>
+				</ul>
+			</div>
+		</section>
+		
+		<section class="mainContent">
+			<div >
 			</div>
 			<p class="clearAll">&nbsp;</p>
 			
@@ -124,12 +173,12 @@
 				
 				<hr/>
 				<div class="logos">
-					<a href="http://www.linode.com/?r=3c585cc26057a0b1931c57ad65873fcdb4053a3a"><img src="/images/linode.jpeg"/></a>
-					<a href="http://www.ubuntu.com/"><img src="/images/ubuntu.png"></a>
-					<a href="http://www.apache.org"><img src="/images/apache.png"/></a>
-					<a href="http://www.postgresql.org"><img src="/images/postgres.png"/></a>
-					<a href="http://www.php.net"><img src="/images/php.jpeg"/></a>
-					<a href="http://codeigniter.com"><img src="/images/codeigniter.jpeg"/></a>
+					<a href="http://www.linode.com/?r=3c585cc26057a0b1931c57ad65873fcdb4053a3a"><img src="/images/linode.jpeg" alt="Linode"/></a>
+					<a href="http://www.ubuntu.com/"><img src="/images/ubuntu.png" alt="Ubuntu"/></a>
+					<a href="http://www.apache.org"><img src="/images/apache.png" alt="Apache"/></a>
+					<a href="http://www.postgresql.org"><img src="/images/postgres.png" alt="PostgreSQL"/></a>
+					<a href="http://www.php.net"><img src="/images/php.jpeg" alt="PHP"/></a>
+					<a href="http://codeigniter.com"><img src="/images/codeigniter.jpeg" alt="CodeIgniter"/></a>
 				</div>
 			</div>
 
@@ -168,40 +217,14 @@
 			</div>
 			
 			<hr/>
-		</div>
+		</section>
 
-		<div class="extraContent">
-			<form id="sortPrefs">
-				<p><label><input type="checkbox" name="group" value="group"> Group results</label></p>
-				
-				<fieldset class="clearAll">
-					<legend>Sort By</legend>
-					<label><input type="radio" name="sort" value="length"/> Length</label><br/>
-					<label><input type="radio" name="sort" value="first"/> First letter</label><br/>
-					<label><input type="radio" name="sort" value="last"/> Last letter</label><br/>
-				</fieldset>
-			</form>
-		</div>
-
-		<div  class="clearAll"/>
+		<div  class="clearAll"> </div>
 		
 		<nav class="clearAll">
-			<div class="listNav">
-				<span class="navCaption">special word lists</span><br/>
-				<button id="2letter" title="Two-Letter Words">2L</button>
-				<button id="greek" title="The Greek alphabet are all valid words, and can be pluralized with -s.">&Delta;&Xi;&Omega;</button>
-				<button id="qwithoutu" title="Words containing Q but not U.">Q!U</button>
-			</div>
-			<div class="etcNav">
-				<span class="navCaption">Miscellany</span><br/>
-				<button id="help" title="Help">Help</button>
-				<button id="about" title="About this Site">About</button>
-				<button id="tech" title="Technology">G&epsilon;&epsilon;&kappa;</button>
-				<button id="contact" title="Contact Us">Email</button>
-			</div>
 		</nav>
 		
-		<div class="clearAll"/>
+		<div class="clearAll"> </div>
 		
 		<footer>
 			<p>&copy;2012 <a href="mailto:slashingweapon@gmail.com">CJ Holmes</a></p>
