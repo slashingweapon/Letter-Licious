@@ -70,10 +70,38 @@ label {
 
 #navigationSection {
 	float:left;
+	width: 75pt;
+	border-right:1pt solid #ccc;
+}
+
+.navCaption {
+	font-size:10pt;
+	text-transform: uppercase;
+	font-weight:bold;
+	color:#555;
+}
+
+.nav button {
+	font-size:15pt;
+	color: #555;
+	font-weight:bold;
+	text-transform:uppercase;
+	padding:5pt;
+	background-color:white;
+	border-radius:6pt;
+	border: 2.5pt solid #ccc;
+	width: 55pt;
+	height: 30pt;
+	margin-bottom: 5pt;
+}
+
+.etcNav button {
+	font-size:11pt;
 }
 
 .mainContent {
 	float:left;
+	width: 500pt;
 }
 
 /*
@@ -189,22 +217,6 @@ button#searchBtn {
 .resultArea.tech,
 .resultArea.help {
 	font-size:14pt;
-}
-
-.navCaption {
-	font-size:.8em;
-	color:#222;
-	text-transform:lowercase;
-}
-
-nav .listNav button {
-	background: -webkit-linear-gradient(#f00, #800);
-	background: -moz-linear-gradient(top, #f00, #800);
-}
-
-nav .etcNav button {
-	background: -webkit-linear-gradient(#0f0, #080);
-	background: -moz-linear-gradient(top, #0f0, #080);
 }
 
 footer, footer a, footer a:link, footer a:visited {
