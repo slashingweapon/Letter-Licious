@@ -37,6 +37,7 @@ form[name=searchTerms] > div {
 	padding-bottom: 5pt;
 	color:white;
 	background: -webkit-linear-gradient(#555, #999, #555);
+	background: -moz-linear-gradient(top, #555, #999, #555);
 	border: 2.5pt solid #ccc;
 	border-radius: 6pt;
 	box-shadow: 5pt 5pt 10pt #aaa;
@@ -57,6 +58,10 @@ label {
 	padding-left:10pt;
 	margin-left:10pt;
 	margin-bottom:5pt;
+}
+
+#sortBy br {
+	line-height:110%;
 }
 
 #sortPrefs label {
