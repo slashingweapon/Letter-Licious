@@ -11,7 +11,7 @@
  *
  */
 function desktopController() {
-	this.currentColumns = 5;
+	this.currentColumns = 4;
 	this.application = null;
 }
 
@@ -249,7 +249,7 @@ $(document).ready(function() {
 		};
 		
 		app.setLocalValue('searchTerm', searchParams);
-		app.setLocalValue('resultCaption', "Words using " + searchParams.letters);
+		app.setLocalValue('resultCaption', "WORDS USING " + searchParams.letters);
 		app.search(searchParams);
 	});
 
