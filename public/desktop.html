@@ -21,48 +21,50 @@
 		<hr/>
 		
 		<section id="controlSection">
-			<form name="searchTerms">
-				<div>
-					<label>prefix<br/>
-					<input type="text" id="prefixLetters" name="prefix" size="3" tabindex="10"
-						autocorrect="off" autocapitalize="characters"/></label>
-				</div>
-				
-				<div>
-					<label>your letters<br/>
-					<input id="searchLetters" type="text" name="search" size="23" tabindex="20"
-						value="" autocorrect="off" autocapitalize="characters"
-						placeholder="your letters here"/></label>
-					<br/>
-					<label><input type="checkbox" id="onBoard" name="onBoard" checked tabindex="40"/>
-						prefix and suffix letters are on the board</label>
-				</div>
-				
-				<div>
-					<label>Suffix<br/>
-					<input type="text" id="suffixLetters" name="suffix" size="3" tabindex="30"
-					autocorrect="off" autocapitalize="characters"/></label>
-				</div>
-				
-				<div>
-					<label><br/>
-					<button id="searchBtn" tabindex="50">Cheat</button></label>
-				</div>				
-			</form>
+			<!-- The extra layers of divs are necessary for controling layout. -->
+			<div id="controlLeftHalf">
+				<form name="searchTerms">
+					<div>
+						<label>prefix<br/>
+						<input type="text" id="prefixLetters" name="prefix" size="3" tabindex="10"/></label>
+					</div>
+					
+					<div>
+						<label>your letters<br/>
+						<input id="searchLetters" type="text" name="search" size="23" tabindex="20"
+							value="" placeholder="your letters here"/></label>
+						<br/>
+						<label><input type="checkbox" id="onBoard" name="onBoard" checked tabindex="40"/>
+							prefix and suffix letters are on the board</label>
+					</div>
+					
+					<div>
+						<label>Suffix<br/>
+						<input type="text" id="suffixLetters" name="suffix" size="3" tabindex="30"/></label>
+					</div>
+					
+					<div>
+						<label><br/>
+						<button id="searchBtn" tabindex="50">Cheat</button></label><br/>
+					</div>				
+				</form>
+			</div>
 			
-			<form id="sortPrefs">
-				<label><input type="checkbox" name="group" value="group"> Group results</label></br>
-				
-				<fieldset>
-					<legend>Sort By</legend>
-					<label><input type="radio" name="sort" value="length"/> Length</label><br/>
-					<label><input type="radio" name="sort" value="first"/> First letter</label><br/>
-					<label><input type="radio" name="sort" value="last"/> Last letter</label><br/>
-				</fieldset>
-			</form>
+			<div id="controlRightHalf">
+				<form id="sortPrefs">
+					<label><input type="checkbox" name="group" value="group"> Group results</label><br/>
+					
+					<fieldset>
+						<legend>Sort By</legend>
+						<label><input type="radio" name="sort" value="length"/> Length</label><br/>
+						<label><input type="radio" name="sort" value="first"/> First letter</label><br/>
+						<label><input type="radio" name="sort" value="last"/> Last letter</label><br/>
+					</fieldset>
+				</form>
+			</div>
 		</section>
 		
-		<hr/>
+		<hr class="clearAll"/>
 		
 		<section id="navigationSection" class="nav">
 			<div class="listNav">
@@ -75,9 +77,9 @@
 			<div class="etcNav">
 				<span class="navCaption">Miscellany</span><br/>
 				<button id="help" title="Help">Help</button><br/>
-				<button id="about" title="About this Site">About</button><br/>
+				<button id="about" title="About this site">About</button><br/>
 				<button id="tech" title="Technology">G&epsilon;&epsilon;&kappa;</button><br/>
-				<button id="contact" title="Contact Us">Email</button><br/>
+				<button id="contact" title="Contact me">Email</button><br/>
 			</div>
 		</section>
 		
@@ -161,8 +163,9 @@
 				array fields and the inverted index was perfect for the task.  I like PostgreSQL
 				so much that I might just keep on using it.</p>
 				
-				<p>The site itself is pretty simple: just HTML and JavaScript, with the occasional 
-				JSON RPC call to perform the searches.  Because I like me some JSON RPC.</p>
+				<p>The site itself is a single-page application that uses HTML5, CSS, and
+				JavaScript.  Searches and the contact form are implemented using asynchronous
+				JSON-RPC calls.</p>
 				
 				<div class="logos">
 					<a href="http://www.linode.com/?r=3c585cc26057a0b1931c57ad65873fcdb4053a3a"><img src="/images/linode.jpeg" alt="Linode"/></a>
