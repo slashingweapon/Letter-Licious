@@ -154,6 +154,23 @@ label {
 	margin-right:8pt;
 }
 
+footer {
+	margin-left:75pt;
+	margin-top: 30pt;
+	width:600pt;
+	border-top:2px solid #ccc;
+	text-align:right;
+}
+
+footer, footer a, footer a:link, footer a:visited {
+	font-size: 8pt;
+	font-weight: bold;
+	color: #888;
+	text-transform:uppercase;
+	font-weight:bold;
+	text-decoration:none;
+}
+
 /*
 div, section, footer, nav {
 
@@ -241,11 +258,6 @@ button#searchBtn {
 .resultArea.tech,
 .resultArea.help {
 	font-size:14pt;
-}
-
-footer, footer a, footer a:link, footer a:visited {
-	font-size: .8em;
-	color: #888;
 }
 
 .listNav, .etcNav {
