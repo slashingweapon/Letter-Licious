@@ -1,8 +1,14 @@
 body {
 	font-family: 'Quicksand', sans-serif;
-	font-size:16pt;
+	font-size:14pt;
 	margin:auto;
 	width:720pt;
+}
+
+h2 {
+	font-size: 20pt;
+	font-weight:bold;
+	text-transform:uppercase;
 }
 
 .clearAll {
@@ -135,6 +141,18 @@ label {
 	padding-bottom: 4pt;
 }
 
+.logos {
+	margin-top:50pt;
+	text-align:center;
+}
+
+.logos img {
+	vertical-align:center;
+	text-align:center;
+	height:60pt;
+	margin-left:8pt;
+	margin-right:8pt;
+}
 
 /*
 div, section, footer, nav {
@@ -228,18 +246,6 @@ button#searchBtn {
 footer, footer a, footer a:link, footer a:visited {
 	font-size: .8em;
 	color: #888;
-}
-
-.logos {
-	text-align:center;
-}
-
-.logos img {
-	vertical-align:center;
-	text-align:center;
-	height:100pt;
-	margin-left:8pt;
-	margin-right:8pt;
 }
 
 .listNav, .etcNav {
