@@ -30,6 +30,10 @@ form[name=searchTerms] > div {
 	float:left;
 }
 
+#searchLetters {
+	width:225pt;
+}
+
 #searchBtn {
 	font-size:20px;
 	text-transform: uppercase;

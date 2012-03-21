@@ -51,6 +51,7 @@ desktopController.prototype.renderWordTable = function() {
 		$(".resultArea.noResults").show();
 	}
 	$("#wordTable tbody").html(html);
+	$("#searchLetters").focus();
 }
 
 desktopController.prototype.renderGroupedWordTable = function(groupedList) {
@@ -308,4 +309,5 @@ $(document).ready(function() {
 		deskManager.renderWordTable();
 	}
 	
+	jQuery("#searchLetters").focus();
 });
