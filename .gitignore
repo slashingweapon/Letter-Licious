@@ -1,1 +1,2 @@
 tmp/log/search_*
+tmp/compiled_templates/*.tpl.php
