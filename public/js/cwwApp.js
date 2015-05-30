@@ -132,6 +132,12 @@ cwwApp.prototype.makeCall = function(url, method, param) {
 		thisApp.setLocalValue('cww_searchResults', retval);
 		if (typeof(thisApp.delegate.handleSearchEnd) == 'function')
 			thisApp.delegate.handleSearchEnd(this);
+		
+		// record in analytics
+		if(method=='advancedSearch')
+			ga('send', 'event', 'search', 'letters');
+		else if(method=='list')
+			ga('send', 'event', 'search', 'list', param);
 	 })
 	 .fail(function(jqx, statusString, exc) {
 		if (typeof(thisApp.delegate.handleSearchError) == 'function') {
